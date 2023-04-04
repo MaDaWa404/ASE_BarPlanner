@@ -1,5 +1,5 @@
 CREATE TABLE drink (
-    id varchar not null,
+    id uuid not null,
     title varchar not null,
     price INTEGER not null,
     amount INTEGER not null,

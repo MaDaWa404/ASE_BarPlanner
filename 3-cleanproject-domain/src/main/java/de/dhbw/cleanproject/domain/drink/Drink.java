@@ -51,4 +51,9 @@ public class Drink {
     public UUID getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "id: " + this.id + ", title: " + this.title + ", price: " + this.price + ", amount: " + this.amount;
+    }
 }

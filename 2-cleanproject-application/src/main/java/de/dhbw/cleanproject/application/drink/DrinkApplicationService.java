@@ -19,4 +19,12 @@ public class DrinkApplicationService {
     public List<Drink> findAllDrinks() {
         return this.drinkRepository.findAllDrinks();
     }
+
+    public List<Drink> findDrinksWithTitle(String title) {
+        return this.drinkRepository.findDrinksWithTitle(title);
+    }
+
+    public Drink addDrink(Drink drink) {
+        return this.drinkRepository.save(drink);
+    }
 }
