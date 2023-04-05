@@ -36,4 +36,9 @@ public class DrinkRepositoryBridge implements DrinkRepository {
     public Drink save(final Drink drink) {
         return this.springDataDrinkRepository.save(drink);
     }
+
+    @Override
+    public void delete(final Drink drink) {
+        this.springDataDrinkRepository.delete(drink);
+    }
 }

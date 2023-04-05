@@ -7,18 +7,19 @@ table td, th  {
 }
 
 .create-button  {
-    padding: 2px 5px;
-    background: #25A6E1;
+    padding: 5px 10px;
+    background: #25e144;
+    border: 0;
     cursor: pointer;
 }
 .edit-button  {
-    padding: 2px 5px;
+    padding: 5px 10px;
     background: #25A6E1;
     cursor: pointer;
 }
 
 .delete-button  {
-    padding: 2px 5px;
+    padding: 5px 10px;
     background: #CD5C5C;
     cursor: pointer;
 }

@@ -46,7 +46,6 @@ public class DrinksController {
             drink = drinkApplicationService.addDrink(drink);
             return ResponseEntity
                     .created(URI.create(String.format("/drinks/%s", drink.getId()))).build();
-
         } else return ResponseEntity.status(403).body("already exists");
     }
 
@@ -55,6 +54,13 @@ public class DrinksController {
         String title = value.get("title");
         int amount = Integer.parseInt(value.get("amount"));
         return drinkToDrinkResourceMapper.apply(this.drinkApplicationService.updateAmount(title, amount));
+    }
 
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteDrink(@RequestBody String title) {
+        if(drinkApplicationService.findByTitle(title) != null) {
+            drinkApplicationService.deleteDrink(drinkApplicationService.findByTitle(title));
+            return ResponseEntity.ok().build();
+        } else return ResponseEntity.notFound().build();
     }
 }

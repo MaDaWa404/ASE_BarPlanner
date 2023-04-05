@@ -11,4 +11,6 @@ public interface DrinkRepository {
     Drink findByTitle(String title);
 
     Drink save(Drink drink);
+
+    void delete(Drink drink);
 }

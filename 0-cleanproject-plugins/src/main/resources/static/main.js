@@ -34,7 +34,7 @@ app.controller("DrinkController", function($scope, $http) {
     $scope.addDrink = function() {
         $http({
             method: "POST",
-            url: '/api/drinks',
+            url: apiUrl,
             data: angular.toJson($scope.drinkForm),
             headers: {
                 'Content-Type': 'application/json'
@@ -58,5 +58,17 @@ app.controller("DrinkController", function($scope, $http) {
         $scope.drinkForm.title = "";
         $scope.drinkForm.price = "";
         $scope.drinkForm.amount = ""
+    }
+
+    //HTTP DELETE for deleting drinks
+    $scope.deleteDrink = function (title) {
+        $http({
+            method: "DELETE",
+            url: apiUrl,
+            data: title,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(_success, _error);
     }
 })

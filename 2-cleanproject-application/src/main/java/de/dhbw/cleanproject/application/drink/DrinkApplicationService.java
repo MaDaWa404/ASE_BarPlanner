@@ -38,4 +38,8 @@ public class DrinkApplicationService {
         drink.setAmount(amount);
         return drinkRepository.save(drink);
     }
+
+    public void deleteDrink(Drink drink) {
+        this.drinkRepository.delete(drink);
+    }
 }
