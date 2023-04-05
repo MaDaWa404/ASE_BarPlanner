@@ -1,8 +1,8 @@
 package de.dhbw.plugins.rest;
 
-import de.dhbw.cleanproject.application.drink.DrinkApplicationService;
 import de.dhbw.cleanproject.adapter.drink.DrinkResource;
 import de.dhbw.cleanproject.adapter.drink.DrinkToDrinkResourceMapper;
+import de.dhbw.cleanproject.application.drink.DrinkApplicationService;
 import de.dhbw.cleanproject.domain.drink.Drink;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class DrinkController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<DrinkResource> getDrinks(@RequestParam(required = false) String title) {
-        if(title!=null) {
+        if (title != null) {
             return this.drinkApplicationService.findDrinksWithTitle(title).stream()
                     .map(drinkToDrinkResourceMapper)
                     .collect(Collectors.toList());
@@ -41,7 +41,7 @@ public class DrinkController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> addDrink(@RequestBody Drink d) {
         Drink drink = new Drink(d.getTitle(), d.getPrice(), d.getAmount());
-        if(drinkApplicationService.findDrinksWithTitle(d.getTitle()).isEmpty()) {
+        if (drinkApplicationService.findDrinksWithTitle(d.getTitle()).isEmpty()) {
             drink = drinkApplicationService.addDrink(drink);
             return ResponseEntity
                     .created(URI.create(String.format("/drinks/%s", drink.getId()))).build();

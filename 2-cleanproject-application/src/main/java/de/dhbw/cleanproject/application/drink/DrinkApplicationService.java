@@ -11,6 +11,7 @@ import java.util.List;
 public class DrinkApplicationService {
 
     private final DrinkRepository drinkRepository;
+
     @Autowired
     public DrinkApplicationService(final DrinkRepository drinkRepository) {
         this.drinkRepository = drinkRepository;

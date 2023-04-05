@@ -1,9 +1,12 @@
 package de.dhbw.cleanproject.domain.drink;
 
-import java.util.UUID;
 import org.apache.commons.lang3.Validate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
 @Table(name = "drink")
@@ -36,6 +39,7 @@ public class Drink {
         this.price = price;
         this.amount = amount;
     }
+
     public String getTitle() {
         return title;
     }
