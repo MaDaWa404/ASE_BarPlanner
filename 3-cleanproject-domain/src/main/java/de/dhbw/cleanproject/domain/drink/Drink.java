@@ -56,6 +56,10 @@ public class Drink {
         return id;
     }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     @Override
     public String toString() {
         return "id: " + this.id + ", title: " + this.title + ", price: " + this.price + ", amount: " + this.amount;

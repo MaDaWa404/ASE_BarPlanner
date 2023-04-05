@@ -21,11 +21,21 @@ public class DrinkApplicationService {
         return this.drinkRepository.findAllDrinks();
     }
 
-    public List<Drink> findDrinksWithTitle(String title) {
-        return this.drinkRepository.findDrinksWithTitle(title);
+    public List<Drink> findDrinksByTitleContaining(String title) {
+        return this.drinkRepository.findDrinksByTitleContaining(title);
+    }
+
+    public Drink findByTitle(String title) {
+        return this.drinkRepository.findByTitle(title);
     }
 
     public Drink addDrink(Drink drink) {
         return this.drinkRepository.save(drink);
+    }
+
+    public Drink updateAmount(String title, int amount) {
+        Drink drink = drinkRepository.findByTitle(title);
+        drink.setAmount(amount);
+        return drinkRepository.save(drink);
     }
 }

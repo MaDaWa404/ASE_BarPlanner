@@ -23,8 +23,13 @@ public class DrinkRepositoryBridge implements DrinkRepository {
     }
 
     @Override
-    public List<Drink> findDrinksWithTitle(final String title) {
-        return this.springDataDrinkRepository.findDrinkByTitle(title);
+    public List<Drink> findDrinksByTitleContaining(final String title) {
+        return this.springDataDrinkRepository.findAllByTitleContaining(title);
+    }
+
+    @Override
+    public Drink findByTitle(String title) {
+        return this.springDataDrinkRepository.findByTitle(title);
     }
 
     @Override

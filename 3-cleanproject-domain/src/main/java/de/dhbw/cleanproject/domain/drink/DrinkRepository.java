@@ -6,7 +6,9 @@ public interface DrinkRepository {
 
     List<Drink> findAllDrinks();
 
-    List<Drink> findDrinksWithTitle(String title);
+    List<Drink> findDrinksByTitleContaining(String title);
+
+    Drink findByTitle(String title);
 
     Drink save(Drink drink);
 }

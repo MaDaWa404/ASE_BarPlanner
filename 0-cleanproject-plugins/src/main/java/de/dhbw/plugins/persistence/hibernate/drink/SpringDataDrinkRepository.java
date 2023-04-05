@@ -8,6 +8,8 @@ import java.util.UUID;
 
 public interface SpringDataDrinkRepository extends JpaRepository<Drink, UUID> {
 
-    List<Drink> findDrinkByTitle(final String title);
+    List<Drink> findAllByTitleContaining(final String title);
+
+    Drink findByTitle(final String title);
 
 }
