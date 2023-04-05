@@ -42,7 +42,7 @@ public class DrinksController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> addDrink(@RequestBody Drink d) {
         Drink drink = new Drink(d.getTitle(), d.getPrice(), d.getAmount());
-        if (drinkApplicationService.findDrinksByTitleContaining(d.getTitle()).isEmpty()) {
+        if (drinkApplicationService.findByTitle(d.getTitle()) == null) {
             drink = drinkApplicationService.addDrink(drink);
             return ResponseEntity
                     .created(URI.create(String.format("/drinks/%s", drink.getId()))).build();
