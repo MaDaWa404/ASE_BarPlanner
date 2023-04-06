@@ -5,11 +5,11 @@ import de.dhbw.cleanproject.adapter.drink.DrinkToDrinkResourceMapper;
 import de.dhbw.cleanproject.application.drink.DrinkApplicationService;
 import de.dhbw.cleanproject.domain.drink.Drink;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,15 +29,19 @@ public class DrinksController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<DrinkResource> getDrinks(@RequestParam(required = false) String title) {
-        if (title != null) {
-            return this.drinkApplicationService.findDrinksByTitleContaining(title).stream()
-                    .map(drinkToDrinkResourceMapper)
-                    .collect(Collectors.toList());
-        }
-        return this.drinkApplicationService.findAllDrinks().stream()
-                .map(drinkToDrinkResourceMapper)
-                .collect(Collectors.toList());
+    public ResponseEntity<?> getDrinks(@CookieValue(name = "bar-id", required = false) String barId, @RequestParam(required = false) String title) {
+        if(barId != null) {
+            UUID id = UUID.fromString(barId);
+            if (title != null) {
+                return new ResponseEntity<>(this.drinkApplicationService.findDrinksByBarAndTitleContaining(id, title).stream()
+                        .map(drinkToDrinkResourceMapper)
+                        .collect(Collectors.toList()), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(this.drinkApplicationService.findDrinksByBar(id).stream()
+                        .map(drinkToDrinkResourceMapper)
+                        .collect(Collectors.toList()), HttpStatus.OK);
+            }
+        } else return new ResponseEntity<>("{\"message\" : \"not registered\"}",HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(method = RequestMethod.POST)

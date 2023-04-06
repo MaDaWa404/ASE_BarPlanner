@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class DrinkApplicationService {
@@ -23,6 +24,13 @@ public class DrinkApplicationService {
 
     public List<Drink> findDrinksByTitleContaining(String title) {
         return this.drinkRepository.findDrinksByTitleContaining(title);
+    }
+
+    public List<Drink> findDrinksByBar(UUID bar) {
+        return this.drinkRepository.findDrinksByBar(bar);
+    }
+    public List<Drink> findDrinksByBarAndTitleContaining(UUID bar, String title) {
+        return this.drinkRepository.findDrinksByBarAndTitleContaining(bar, title);
     }
 
     public Drink findByTitle(String title) {

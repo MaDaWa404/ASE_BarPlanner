@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class DrinkRepositoryBridge implements DrinkRepository {
@@ -25,6 +26,16 @@ public class DrinkRepositoryBridge implements DrinkRepository {
     @Override
     public List<Drink> findDrinksByTitleContaining(final String title) {
         return this.springDataDrinkRepository.findAllByTitleContaining(title);
+    }
+
+    @Override
+    public List<Drink> findDrinksByBar(final UUID bar) {
+        return this.springDataDrinkRepository.findAllByBar(bar);
+    }
+
+    @Override
+    public List<Drink> findDrinksByBarAndTitleContaining(final UUID bar, final String title) {
+        return this.springDataDrinkRepository.findAllByBarAndTitleContaining(bar, title);
     }
 
     @Override

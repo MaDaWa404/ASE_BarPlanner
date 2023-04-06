@@ -10,6 +10,10 @@ public interface SpringDataDrinkRepository extends JpaRepository<Drink, UUID> {
 
     List<Drink> findAllByTitleContaining(final String title);
 
+    List<Drink> findAllByBar(final UUID bar);
+
+    List<Drink> findAllByBarAndTitleContaining(final UUID bar, final String title);
+
     Drink findByTitle(final String title);
 
 }
