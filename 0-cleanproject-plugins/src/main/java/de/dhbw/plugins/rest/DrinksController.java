@@ -42,7 +42,13 @@ public class DrinksController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> addDrink(@RequestBody Drink d) {
-        Drink drink = new Drink(d.getTitle(), d.getPrice(), d.getAmount(), UUID.fromString("194df0d2-9d0e-451c-aa6a-a6065a8caf94")); //TODO change to specific UUID
+        Drink drink;
+        try {
+            drink = new Drink(d.getTitle(), d.getPrice(), d.getAmount(), UUID.fromString("194df0d2-9d0e-451c-aa6a-a6065a8caf94")); //TODO change to specific UUID
+
+        }   catch (IllegalArgumentException | NullPointerException exception) {
+            return new ResponseEntity<>("{\"message\" : \"no data provided\"}",HttpStatus.BAD_REQUEST);
+        }
         if (drinkApplicationService.findByTitle(d.getTitle()) == null) {
             drink = drinkApplicationService.addDrink(drink);
             return ResponseEntity

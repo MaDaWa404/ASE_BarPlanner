@@ -49,9 +49,9 @@ app.controller("DrinkController", function ($scope, $http) {
     }
 
     function _error(res) {
-        var data = res.data;
-        var status = res.status;
-        alert("Error: " + status + ":" + data);
+        const message = res.data.message;
+        const status = res.status;
+        alert("Error " + status + ": " + message);
     }
 
     // Clear the form
