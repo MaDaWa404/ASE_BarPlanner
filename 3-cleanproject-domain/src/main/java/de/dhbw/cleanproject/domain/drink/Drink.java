@@ -25,19 +25,24 @@ public class Drink {
     @Column(name = "amount")
     private int amount;
 
+    @Column(name = "bar")
+    private UUID bar;
+
     protected Drink() {
         //default constructor for JPA
     }
 
-    public Drink(final String title, final int price, final int amount) {
+    public Drink(final String title, final int price, final int amount, final UUID bar) {
         Validate.notBlank(title);
         Validate.notNaN(price);
         Validate.notNaN(amount);
+        Validate.notNull(bar);
 
         this.id = UUID.randomUUID();
         this.title = title;
         this.price = price;
         this.amount = amount;
+        this.bar = bar;
     }
 
     public String getTitle() {
@@ -54,6 +59,10 @@ public class Drink {
 
     public UUID getId() {
         return id;
+    }
+
+    public UUID getBar() {
+        return bar;
     }
 
     public void setAmount(int amount) {

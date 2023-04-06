@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -41,7 +42,7 @@ public class DrinksController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> addDrink(@RequestBody Drink d) {
-        Drink drink = new Drink(d.getTitle(), d.getPrice(), d.getAmount());
+        Drink drink = new Drink(d.getTitle(), d.getPrice(), d.getAmount(), UUID.randomUUID()); //TODO change to specific UUID
         if (drinkApplicationService.findByTitle(d.getTitle()) == null) {
             drink = drinkApplicationService.addDrink(drink);
             return ResponseEntity
