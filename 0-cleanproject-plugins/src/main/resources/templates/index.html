@@ -5,7 +5,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.js"></script>
 
     <script th:src="@{/main.js}"></script>
-    <link th:href="@{/main.css}" rel="stylesheet" />
+    <link th:href="@{/main.css}" rel="stylesheet"/>
 </head>
 <body ng-app="DrinkManagement" ng-controller="DrinkController">
 <h1>
@@ -17,19 +17,19 @@
     <table>
         <tr>
             <td>Name</td>
-            <td><input type="text" ng-model="drinkForm.title" /></td>
+            <td><input type="text" ng-model="drinkForm.title"/></td>
         </tr>
         <tr>
             <td>Price</td>
-            <td><input type="text" ng-model="drinkForm.price" /></td>
+            <td><input type="text" ng-model="drinkForm.price"/></td>
         </tr>
         <tr>
             <td>Amount</td>
-            <td><input type="text" ng-model="drinkForm.amount"  /></td>
+            <td><input type="text" ng-model="drinkForm.amount"/></td>
         </tr>
         <tr>
             <td colspan="2">
-                <input type="submit" value="Add drink" class="create-button" />
+                <input type="submit" value="Add drink" class="create-button"/>
             </td>
         </tr>
     </table>
@@ -44,11 +44,10 @@
         <th>Edit</th>
         <th>Delete</th>
     </tr>
-    <!-- $scope.employees -->
     <tr ng-repeat="drink in drinks">
         <td> {{ drink.title }}</td>
         <td> {{ drink.price }}</td>
-        <td >{{ drink.amount }}</td>
+        <td>{{ drink.amount }}</td>
         <td>
             <a ng-click="editDrink(drink)" class="edit-button">Edit</a>
         </td>

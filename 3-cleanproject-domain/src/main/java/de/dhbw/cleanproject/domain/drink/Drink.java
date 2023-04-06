@@ -71,6 +71,6 @@ public class Drink {
 
     @Override
     public String toString() {
-        return "id: " + this.id + ", title: " + this.title + ", price: " + this.price + ", amount: " + this.amount;
+        return "id: " + this.id + ", title: " + this.title + ", price: " + this.price + ", amount: " + this.amount + ", bar:" + this.bar;
     }
 }

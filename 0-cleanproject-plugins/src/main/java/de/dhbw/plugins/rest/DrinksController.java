@@ -42,7 +42,7 @@ public class DrinksController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> addDrink(@RequestBody Drink d) {
-        Drink drink = new Drink(d.getTitle(), d.getPrice(), d.getAmount(), UUID.randomUUID()); //TODO change to specific UUID
+        Drink drink = new Drink(d.getTitle(), d.getPrice(), d.getAmount(), UUID.fromString("194df0d2-9d0e-451c-aa6a-a6065a8caf94")); //TODO change to specific UUID
         if (drinkApplicationService.findByTitle(d.getTitle()) == null) {
             drink = drinkApplicationService.addDrink(drink);
             return ResponseEntity
@@ -51,7 +51,7 @@ public class DrinksController {
     }
 
     @RequestMapping(method = RequestMethod.PATCH)
-    public DrinkResource updateAmount(@RequestBody Map<String,String> value) {
+    public DrinkResource updateAmount(@RequestBody Map<String, String> value) {
         String title = value.get("title");
         int amount = Integer.parseInt(value.get("amount"));
         return drinkToDrinkResourceMapper.apply(this.drinkApplicationService.updateAmount(title, amount));
@@ -59,7 +59,7 @@ public class DrinksController {
 
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteDrink(@RequestBody String title) {
-        if(drinkApplicationService.findByTitle(title) != null) {
+        if (drinkApplicationService.findByTitle(title) != null) {
             drinkApplicationService.deleteDrink(drinkApplicationService.findByTitle(title));
             return ResponseEntity.ok().build();
         } else return ResponseEntity.notFound().build();

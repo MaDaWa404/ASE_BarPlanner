@@ -1,7 +1,7 @@
 var app = angular.module("DrinkManagement", []);
 
 // Controller Part
-app.controller("DrinkController", function($scope, $http) {
+app.controller("DrinkController", function ($scope, $http) {
 
     const apiUrl = '/api/drinks'
 
@@ -10,7 +10,7 @@ app.controller("DrinkController", function($scope, $http) {
         title: "",
         price: "",
         amount: ""
-    };
+    }
 
     // Now load the data from server
     _refreshDrinkData();
@@ -21,17 +21,17 @@ app.controller("DrinkController", function($scope, $http) {
             method: 'GET',
             url: '/api/drinks'
         }).then(
-            function(res) { // success
+            function (res) { // success
                 $scope.drinks = res.data;
             },
-            function(res) { // error
+            function (res) { // error
                 console.log("Error: " + res.status + " : " + res.data);
             }
         );
     }
 
     // HTTP POST for adding drinks
-    $scope.addDrink = function() {
+    $scope.addDrink = function () {
         $http({
             method: "POST",
             url: apiUrl,
@@ -47,6 +47,7 @@ app.controller("DrinkController", function($scope, $http) {
         _clearFormData();
 
     }
+
     function _error(res) {
         var data = res.data;
         var status = res.status;
