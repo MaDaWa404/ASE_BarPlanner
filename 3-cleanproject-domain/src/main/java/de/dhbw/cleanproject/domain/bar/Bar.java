@@ -19,7 +19,7 @@ public class Bar {
     private String title;
 
     @Column(name = "administrator")
-    private String administrator;
+    private UUID administrator;
 
     @Column(name = "zip")
     private Integer zip;
@@ -47,9 +47,9 @@ public class Bar {
 
     }
 
-    public Bar(String title, String administrator, Integer zip, String city, String street, Integer number) {
+    public Bar(String title, UUID administrator, Integer zip, String city, String street, Integer number) {
         Validate.notBlank(title);
-        Validate.notBlank(administrator);
+        Validate.notNull(administrator);
         Validate.notNaN(zip);
         Validate.notBlank(city);
         Validate.notBlank(street);
@@ -72,7 +72,7 @@ public class Bar {
         return title;
     }
 
-    public String getAdministrator() {
+    public UUID getAdministrator() {
         return administrator;
     }
 
