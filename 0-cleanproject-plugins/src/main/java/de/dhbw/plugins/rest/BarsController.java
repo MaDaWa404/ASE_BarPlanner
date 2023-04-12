@@ -4,6 +4,7 @@ import de.dhbw.cleanproject.application.bar.BarService;
 import de.dhbw.cleanproject.application.person.PersonService;
 import de.dhbw.cleanproject.domain.bar.Bar;
 import de.dhbw.cleanproject.domain.person.Person;
+import de.dhbw.plugins.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +27,10 @@ public class BarsController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> addBar(@RequestBody Bar bar, HttpServletRequest request) {
+    public ResponseEntity<?> addBar(@RequestBody Bar bar, HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
         if(id == null) {
-            return new ResponseEntity<>("{\"message\" : \"not registered\"}", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("not registered"), HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
 
@@ -43,10 +44,10 @@ public class BarsController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    public ResponseEntity<String> removeBar(HttpServletRequest request) {
+    public ResponseEntity<?> removeBar(HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
         if(id == null) {
-            return new ResponseEntity<>("{\"message\" : \"not registered\"}", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("not registered"), HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
 

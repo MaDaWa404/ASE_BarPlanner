@@ -24,8 +24,7 @@ app.controller("DrinkController", function ($scope, $http) {
                 $scope.username = res.data.username
             },
             function (res) { // error
-                console.log(res.data)
-                console.log("Error: " + res.status + " : " + res.data.message);
+                _error(res)
                 $scope.drinks = []
                 $scope.bar = ""
                 $scope.username = ""

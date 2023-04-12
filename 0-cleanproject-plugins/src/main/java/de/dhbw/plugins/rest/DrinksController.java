@@ -8,6 +8,7 @@ import de.dhbw.cleanproject.application.person.PersonService;
 import de.dhbw.cleanproject.domain.bar.Bar;
 import de.dhbw.cleanproject.domain.drink.Drink;
 import de.dhbw.cleanproject.domain.person.Person;
+import de.dhbw.plugins.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class DrinksController {
     public ResponseEntity<?> getDrinks(@RequestParam(required = false) String title, HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
         if(id == null) {
-            return new ResponseEntity<>("{\"message\" : \"not registered\"}",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("not registered"),HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
         Bar b = barService.findBarByAdministrator(p.getId());
@@ -59,10 +60,10 @@ public class DrinksController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> addDrink(@RequestBody Drink d, HttpServletRequest request) {
+    public ResponseEntity<?> addDrink(@RequestBody Drink d, HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
         if(id == null) {
-            return new ResponseEntity<>("{\"message\" : \"not registered\"}",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("not registered"),HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
         Bar b = barService.findBarByAdministrator(p.getId());
@@ -72,7 +73,7 @@ public class DrinksController {
             drink = new Drink(d.getTitle(), d.getPrice(), d.getAmount(), b.getId());
 
         }   catch (IllegalArgumentException | NullPointerException exception) {
-            return new ResponseEntity<>("{\"message\" : \"no data provided\"}",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("no data provided"),HttpStatus.BAD_REQUEST);
         }
         if (drinkApplicationService.findByTitle(d.getTitle()) == null) {
             drink = drinkApplicationService.addDrink(drink);

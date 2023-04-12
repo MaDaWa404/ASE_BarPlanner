@@ -4,6 +4,7 @@ import de.dhbw.cleanproject.adapter.person.PersonResource;
 import de.dhbw.cleanproject.adapter.person.PersonToPersonResourceMapper;
 import de.dhbw.cleanproject.application.person.PersonService;
 import de.dhbw.cleanproject.domain.person.Person;
+import de.dhbw.plugins.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,12 @@ public class PersonsController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<String> register(@RequestBody Person p, HttpServletRequest request) {
+    public ResponseEntity<?> register(@RequestBody Person p, HttpServletRequest request) {
         Person person;
         try {
             person = new Person(p.getUsername(), p.getPasswordHash(), p.getLastname(), p.getFirstname());
         } catch (IllegalArgumentException | NullPointerException exception) {
-            return new ResponseEntity<>("{\"message\" : \"no data provided\"}",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("no data provided"),HttpStatus.BAD_REQUEST);
         }
 
         if (personService.findByUsername(p.getUsername()) == null) {
@@ -46,18 +47,17 @@ public class PersonsController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody(required = false) PersonResource p, HttpServletRequest request) {
         if(p.getUsername().isBlank() || p.getPasswordHash().isBlank()) {
-            return new ResponseEntity<>("{\"message\" : \"username or password invalid\"}",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("username or password invalid"),HttpStatus.BAD_REQUEST);
         }
         Person person = personService.findByUsername(p.getUsername());
         if(person == null) {
-            return new ResponseEntity<>("{\"message\" : \"username invalid\"}",HttpStatus.BAD_REQUEST);
-
+            return new ResponseEntity<>(new ErrorMessage("username invalid"),HttpStatus.BAD_REQUEST);
         }
         if(person.getPasswordHash().equals(p.getPasswordHash())) {
             request.getSession().setAttribute("person", person.getId().toString());
-            return new ResponseEntity<>("{\"username\" : \" " + person.getUsername() + "\"}", HttpStatus.OK);
+            return new ResponseEntity<>(new PersonResource(person.getUsername()), HttpStatus.OK);
         }
-        return new ResponseEntity<>("{\"message\" : \"password invalid\"}",HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorMessage("password invalid"),HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
