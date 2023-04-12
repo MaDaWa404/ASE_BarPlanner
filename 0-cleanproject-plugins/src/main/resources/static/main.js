@@ -3,17 +3,12 @@ var app = angular.module("DrinkManagement", []);
 // Controller Part
 app.controller("DrinkController", function ($scope, $http) {
 
-    const apiUrl = '/api/drinks'
-
     $scope.drinks = [];
-    $scope.drinkForm = {
-        title: "",
-        price: "",
-        amount: ""
-    }
+    $scope.username = "";
 
     // Now load the data from server
     _refreshDrinkData();
+    _resetForms()
 
     // HTTP GET - get all drinks
     function _refreshDrinkData() {
@@ -25,7 +20,8 @@ app.controller("DrinkController", function ($scope, $http) {
                 $scope.drinks = res.data;
             },
             function (res) { // error
-                console.log("Error: " + res.status + " : " + res.data);
+                console.log("Error: " + res.status + " : " + res.data.message);
+                $scope.drinks = []
             }
         );
     }
@@ -34,7 +30,7 @@ app.controller("DrinkController", function ($scope, $http) {
     $scope.addDrink = function () {
         $http({
             method: "POST",
-            url: apiUrl,
+            url: '/api/drinks',
             data: angular.toJson($scope.drinkForm),
             headers: {
                 'Content-Type': 'application/json'
@@ -42,30 +38,74 @@ app.controller("DrinkController", function ($scope, $http) {
         }).then(_success, _error);
     };
 
+    $scope.register = function () {
+        $http({
+            method: "POST",
+            url: '/api/persons/register',
+            data: angular.toJson($scope.registerForm),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(_successUser, _error);
+    }
+    $scope.login = function () {
+        $http({
+            method: "POST",
+            url: '/api/persons/login',
+            data: angular.toJson($scope.loginForm),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(_successUser, _error);
+    }
+    $scope.logout = function () {
+        $scope.username = ""
+        $http({
+            method: "GET",
+            url: '/api/persons/logout',
+        }).then(_successUser, _error);
+    }
+
     function _success() {
         _refreshDrinkData();
-        _clearFormData();
+        _resetForms();
+    }
 
+    function _successUser(res) {
+        console.log("called" + res.data)
+        $scope.username = res.data.username
+        _resetForms();
+        _refreshDrinkData();
     }
 
     function _error(res) {
-        const message = res.data.message;
-        const status = res.status;
-        alert("Error " + status + ": " + message);
+        console.log("error" + res.data)
+        alert("Error: " + res.status + " : " + res.data.message)
     }
 
-    // Clear the form
-    function _clearFormData() {
-        $scope.drinkForm.title = "";
-        $scope.drinkForm.price = "";
-        $scope.drinkForm.amount = ""
+    function _resetForms() {
+        $scope.drinkForm = {
+            title: "",
+            price: "",
+            amount: ""
+        }
+        $scope.registerForm = {
+            username: "",
+            passwordHash: "",
+            lastname: "",
+            firstname: ""
+        }
+        $scope.loginForm = {
+            username: "",
+            passwordHash: "",
+        }
     }
 
     //HTTP DELETE for deleting drinks
     $scope.deleteDrink = function (title) {
         $http({
             method: "DELETE",
-            url: apiUrl,
+            url: '/api/drinks',
             data: title,
             headers: {
                 'Content-Type': 'application/json'

@@ -56,5 +56,50 @@
         </td>
     </tr>
 </table>
+<h2>Account</h2>
+<p>{{ username }}</p>
+<form ng-submit="register()">
+    <table>
+        <tr>
+            <td>username</td>
+            <td><input type="text" ng-model="registerForm.username"/></td>
+        </tr>
+        <tr>
+            <td>password</td>
+            <td><input type="password" ng-model="registerForm.passwordHash"/></td>
+        </tr>
+        <tr>
+            <td>lastname</td>
+            <td><input type="text" ng-model="registerForm.lastname"/></td>
+        </tr>
+        <tr>
+            <td>firstname</td>
+            <td><input type="text" ng-model="registerForm.firstname"/></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Register" class="create-button"/>
+            </td>
+        </tr>
+    </table>
+</form>
+<form ng-submit="login()">
+    <table>
+        <tr>
+            <td>username</td>
+            <td><input type="text" ng-model="loginForm.username"/></td>
+        </tr>
+        <tr>
+            <td>password</td>
+            <td><input type="password" ng-model="loginForm.passwordHash"/></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Login" class="create-button"/>
+            </td>
+        </tr>
+    </table>
+</form>
+<button ng-click="logout()" class="delete-button">Logout</button>
 </body>
 </html>

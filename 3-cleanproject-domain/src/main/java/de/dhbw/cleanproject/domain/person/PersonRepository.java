@@ -1,16 +1,14 @@
 package de.dhbw.cleanproject.domain.person;
 
 
-import java.util.List;
+import java.util.UUID;
 
 public interface PersonRepository {
 
-    List<Person> findAllPersons();
+    Person findPersonById(UUID username);
 
-    Person findByUsername(String username);
+    Person findPersonByUsername(String username);
 
     Person save(Person person);
-
-    void delete(Person person);
 }
 
