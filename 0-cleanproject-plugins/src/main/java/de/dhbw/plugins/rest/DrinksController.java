@@ -45,15 +45,17 @@ public class DrinksController {
         }
         Person p = personService.findByID(UUID.fromString(id));
         Bar b = barService.findBarByAdministrator(p.getId());
-            if (title != null) {
-                return new ResponseEntity<>(this.drinkApplicationService.findDrinksByBarAndTitleContaining(b.getId(), title).stream()
-                        .map(drinkToDrinkResourceMapper)
-                        .collect(Collectors.toList()), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(this.drinkApplicationService.findDrinksByBar(b.getId()).stream()
-                        .map(drinkToDrinkResourceMapper)
-                        .collect(Collectors.toList()), HttpStatus.OK);
-            }
+        Map<String, Object> response;
+        if (title != null) {
+            response = Map.of("drinks", this.drinkApplicationService.findDrinksByBarAndTitleContaining(b.getId(), title).stream()
+                    .map(drinkToDrinkResourceMapper)
+                    .collect(Collectors.toList()), "bar", b.getTitle(), "username", p.getUsername());
+        } else {
+            response = Map.of("drinks", this.drinkApplicationService.findDrinksByBar(b.getId()).stream()
+                    .map(drinkToDrinkResourceMapper)
+                    .collect(Collectors.toList()), "bar", b.getTitle(), "username", p.getUsername());
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)

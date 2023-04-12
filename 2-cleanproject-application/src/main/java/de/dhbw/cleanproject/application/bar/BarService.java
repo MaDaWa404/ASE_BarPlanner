@@ -20,4 +20,12 @@ public class BarService {
     public Bar findBarByAdministrator(UUID id) {
         return barRepository.findBarByAdministrator(id);
     }
+
+    public Bar save(Bar bar) {
+        return barRepository.save(bar);
+    }
+
+    public void delete(Bar bar) {
+        barRepository.delete(bar);
+    }
 }

@@ -37,16 +37,6 @@ public class Bar {
         //default constructor for JPA
     }
 
-    public Bar(final String title, final int price, final int amount) {
-        Validate.notBlank(title);
-        Validate.notNaN(price);
-        Validate.notNaN(amount);
-
-        this.id = UUID.randomUUID();
-        this.title = title;
-
-    }
-
     public Bar(String title, UUID administrator, Integer zip, String city, String street, Integer number) {
         Validate.notBlank(title);
         Validate.notNull(administrator);

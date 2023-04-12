@@ -8,98 +8,117 @@
     <link th:href="@{/main.css}" rel="stylesheet"/>
 </head>
 <body ng-app="DrinkManagement" ng-controller="DrinkController">
-<h1>
-    ASE BarPlanner
-</h1>
+<div class="page-wrapper">
 
-<h2>Add Drink</h2>
-<form ng-submit="addDrink()">
-    <table>
-        <tr>
-            <td>Name</td>
-            <td><input type="text" ng-model="drinkForm.title"/></td>
-        </tr>
-        <tr>
-            <td>Price</td>
-            <td><input type="text" ng-model="drinkForm.price"/></td>
-        </tr>
-        <tr>
-            <td>Amount</td>
-            <td><input type="text" ng-model="drinkForm.amount"/></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="Add drink" class="create-button"/>
-            </td>
-        </tr>
-    </table>
-</form>
-<br>
-<h2>View Drinks</h2>
-<table>
-    <tr>
-        <th>Title</th>
-        <th>Price</th>
-        <th>Amount</th>
-        <th>Edit</th>
-        <th>Delete</th>
-    </tr>
-    <tr ng-repeat="drink in drinks">
-        <td> {{ drink.title }}</td>
-        <td> {{ drink.price }}</td>
-        <td>{{ drink.amount }}</td>
-        <td>
-            <a ng-click="editDrink(drink)" class="edit-button">Edit</a>
-        </td>
-        <td>
-            <a ng-click="deleteDrink(drink.title)" class="delete-button">Delete</a>
-        </td>
-    </tr>
-</table>
-<h2>Account</h2>
-<p>{{ username }}</p>
-<form ng-submit="register()">
-    <table>
-        <tr>
-            <td>username</td>
-            <td><input type="text" ng-model="registerForm.username"/></td>
-        </tr>
-        <tr>
-            <td>password</td>
-            <td><input type="password" ng-model="registerForm.passwordHash"/></td>
-        </tr>
-        <tr>
-            <td>lastname</td>
-            <td><input type="text" ng-model="registerForm.lastname"/></td>
-        </tr>
-        <tr>
-            <td>firstname</td>
-            <td><input type="text" ng-model="registerForm.firstname"/></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="Register" class="create-button"/>
-            </td>
-        </tr>
-    </table>
-</form>
-<form ng-submit="login()">
-    <table>
-        <tr>
-            <td>username</td>
-            <td><input type="text" ng-model="loginForm.username"/></td>
-        </tr>
-        <tr>
-            <td>password</td>
-            <td><input type="password" ng-model="loginForm.passwordHash"/></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="Login" class="create-button"/>
-            </td>
-        </tr>
-    </table>
-</form>
-<button ng-click="logout()" class="delete-button">Logout</button>
+    <h1>
+        ASE BarPlanner
+    </h1>
+    <h2>{{bar}}</h2>
+
+    <form ng-submit="addDrink()">
+        <fieldset ng-disabled="!bar">
+            <legend>Add drink</legend>
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td><input type="text" ng-model="drinkForm.title"/></td>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td><input type="text" ng-model="drinkForm.price"/></td>
+                </tr>
+                <tr>
+                    <td>Amount</td>
+                    <td><input type="text" ng-model="drinkForm.amount"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" value="Add drink" class="create-button"/>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+    <br>
+    <fieldset ng-disabled="!bar">
+        <legend>View drinks</legend>
+        <table ng-if="drinks.length >= 1">
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="drink in drinks">
+                <td> {{ drink.title }}</td>
+                <td> {{ drink.price }}</td>
+                <td>{{ drink.amount }}</td>
+                <td>
+                    <a ng-click="editDrink(drink)" class="edit-button">Edit</a>
+                </td>
+                <td>
+                    <a ng-click="deleteDrink(drink.title)" class="delete-button">Delete</a>
+                </td>
+            </tr>
+        </table>
+        <p ng-if="drinks.length <= 0">Please log in and register a bar to see drinks</p>
+    </fieldset>
+    <h3>Account</h3>
+    <p ng-if="username">Logged in as {{ username }}</p>
+    <p ng-if="!username">currently not logged in</p>
+    <form ng-submit="register()">
+        <fieldset ng-disabled="username">
+            <legend>Register new account</legend>
+            <table>
+                <tr>
+                    <td>username</td>
+                    <td><input type="text" ng-model="registerForm.username"/></td>
+                </tr>
+                <tr>
+                    <td>password</td>
+                    <td><input type="password" ng-model="registerForm.passwordHash"/></td>
+                </tr>
+                <tr>
+                    <td>lastname</td>
+                    <td><input type="text" ng-model="registerForm.lastname"/></td>
+                </tr>
+                <tr>
+                    <td>firstname</td>
+                    <td><input type="text" ng-model="registerForm.firstname"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" value="Register" class="create-button"/>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+    <form ng-submit="login()">
+        <fieldset ng-disabled="username">
+            <legend>Log into existing account</legend>
+            <table>
+                <tr>
+                    <td>username</td>
+                    <td><input type="text" ng-model="loginForm.username"/></td>
+                </tr>
+                <tr>
+                    <td>password</td>
+                    <td><input type="password" ng-model="loginForm.passwordHash"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" value="Login" class="create-button"/>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+    <fieldset ng-disabled="!username">
+        <legend>log out</legend>
+        <button ng-click="logout()" class="delete-button">Logout</button>
+    </fieldset>
+</div>
 </body>
 </html>

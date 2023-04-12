@@ -25,3 +25,12 @@ table td, th {
     border: 0;
     cursor: pointer;
 }
+
+fieldset {
+    border: 1px solid lightgray;
+}
+
+.page-wrapper {
+    width: 500px;
+    margin: auto;
+}
