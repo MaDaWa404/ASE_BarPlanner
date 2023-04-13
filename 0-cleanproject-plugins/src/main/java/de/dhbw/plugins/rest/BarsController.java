@@ -33,13 +33,13 @@ public class BarsController {
     public ResponseEntity<?> addBar(@RequestBody Bar bar, HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
         if (id == null) {
-            return new ResponseEntity<>(new ErrorMessage("not registered"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("not registered", true), HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
 
 
         if (barService.findBarByAdministrator(p.getId()) == null) {
-            Bar b = new Bar(bar.getTitle(), bar.getAdministrator(), bar.getZip(), bar.getCity(), bar.getStreet(), bar.getNumber());
+            Bar b = new Bar(bar.getTitle(), p.getId(), bar.getZip(), bar.getCity(), bar.getStreet(), bar.getNumber());
             barService.save(b);
             return ResponseEntity
                     .status(201).build();
@@ -50,7 +50,7 @@ public class BarsController {
     public ResponseEntity<?> removeBar(HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
         if (id == null) {
-            return new ResponseEntity<>(new ErrorMessage("not registered"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("not registered", true), HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
 

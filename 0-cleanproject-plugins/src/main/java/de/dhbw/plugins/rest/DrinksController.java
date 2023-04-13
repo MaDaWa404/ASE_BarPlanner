@@ -42,19 +42,25 @@ public class DrinksController {
     public ResponseEntity<?> getDrinks(@RequestParam(required = false) String title, HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
         if (id == null) {
-            return new ResponseEntity<>(new ErrorMessage("not registered"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("not registered", false), HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
         Bar b = barService.findBarByAdministrator(p.getId());
+
         Map<String, Object> response;
-        if (title != null) {
-            response = Map.of("drinks", this.drinkApplicationService.findDrinksByBarAndTitleContaining(b.getId(), title).stream()
-                    .map(drinkToDrinkResourceMapper)
-                    .collect(Collectors.toList()), "bar", b.getTitle(), "username", p.getUsername());
-        } else {
-            response = Map.of("drinks", this.drinkApplicationService.findDrinksByBar(b.getId()).stream()
-                    .map(drinkToDrinkResourceMapper)
-                    .collect(Collectors.toList()), "bar", b.getTitle(), "username", p.getUsername());
+
+        if (b == null) response = Map.of("username", p.getUsername());
+        else {
+
+            if (title != null) {
+                response = Map.of("drinks", this.drinkApplicationService.findDrinksByBarAndTitleContaining(b.getId(), title).stream()
+                        .map(drinkToDrinkResourceMapper)
+                        .collect(Collectors.toList()), "bar", b.getTitle(), "username", p.getUsername());
+            } else {
+                response = Map.of("drinks", this.drinkApplicationService.findDrinksByBar(b.getId()).stream()
+                        .map(drinkToDrinkResourceMapper)
+                        .collect(Collectors.toList()), "bar", b.getTitle(), "username", p.getUsername());
+            }
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -63,17 +69,20 @@ public class DrinksController {
     public ResponseEntity<?> addDrink(@RequestBody Drink d, HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
         if (id == null) {
-            return new ResponseEntity<>(new ErrorMessage("not registered"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("not registered", true), HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
         Bar b = barService.findBarByAdministrator(p.getId());
 
+        if (b == null) {
+            return new ResponseEntity<>(new ErrorMessage("please register a bar first", true), HttpStatus.BAD_REQUEST);
+        }
+
         Drink drink;
         try {
             drink = new Drink(d.getTitle(), d.getPrice(), d.getAmount(), b.getId());
-
         } catch (IllegalArgumentException | NullPointerException exception) {
-            return new ResponseEntity<>(new ErrorMessage("no data provided"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("no data provided", true), HttpStatus.BAD_REQUEST);
         }
         if (drinkApplicationService.findByTitle(d.getTitle()) == null) {
             drink = drinkApplicationService.addDrink(drink);

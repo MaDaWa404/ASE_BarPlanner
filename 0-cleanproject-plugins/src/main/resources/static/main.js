@@ -78,8 +78,11 @@ app.controller("DrinkController", function ($scope, $http) {
     }
 
     function _error(res) {
-        console.log("error" + res.data)
-        alert("Error: " + res.status + " : " + res.data.message)
+        if (res.data.alert) {
+            alert("Error: " + res.status + " : " + res.data.message)
+        }
+        console.log("Error: " + res.status + " : " + res.data.message)
+
     }
 
     function _resetForms() {
@@ -98,6 +101,13 @@ app.controller("DrinkController", function ($scope, $http) {
             username: "",
             passwordHash: "",
         }
+        $scope.registerBarForm = {
+            title: "",
+            zip: "",
+            city: "",
+            street: "",
+            number: ""
+        }
     }
 
     //HTTP DELETE for deleting drinks
@@ -109,6 +119,24 @@ app.controller("DrinkController", function ($scope, $http) {
             headers: {
                 'Content-Type': 'application/json'
             }
+        }).then(_success, _error);
+    }
+
+    $scope.registerBar = function () {
+        $http({
+            method: "POST",
+            url: '/api/bars',
+            data: angular.toJson($scope.registerBarForm),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(_success, _error);
+    }
+
+    $scope.deleteBar = function () {
+        $http({
+            method: "DELETE",
+            url: '/api/bars',
         }).then(_success, _error);
     }
 })

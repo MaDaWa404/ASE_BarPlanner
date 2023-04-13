@@ -17,7 +17,7 @@ CREATE TABLE bar
     street        varchar not null,
     number        INTEGER not null,
     constraint pk_bar primary key (id),
-    constraint fk_user foreign key (administrator) references person
+    constraint fk_user foreign key (administrator) references person ON DELETE CASCADE
 );
 CREATE TABLE drink
 (
@@ -27,7 +27,7 @@ CREATE TABLE drink
     amount INTEGER not null,
     bar    uuid    not null,
     constraint pk_drink primary key (id),
-    constraint fk_bar foreign key (bar) references bar
+    constraint fk_bar foreign key (bar) references bar ON DELETE CASCADE
 );
 CREATE TABLE purchase
 (
@@ -35,7 +35,7 @@ CREATE TABLE purchase
     person uuid not null,
     drink  uuid not null,
     constraint pk_purchase primary key (id),
-    constraint fk_person foreign key (person) references person,
-    constraint fk_drink foreign key (drink) references drink
+    constraint fk_person foreign key (person) references person ON DELETE CASCADE,
+    constraint fk_drink foreign key (drink) references drink ON DELETE CASCADE
 
 )

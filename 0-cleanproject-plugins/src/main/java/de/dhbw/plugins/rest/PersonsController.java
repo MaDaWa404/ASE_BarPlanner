@@ -36,7 +36,7 @@ public class PersonsController {
         try {
             person = new Person(p.getUsername(), p.getPasswordHash(), p.getLastname(), p.getFirstname());
         } catch (IllegalArgumentException | NullPointerException exception) {
-            return new ResponseEntity<>(new ErrorMessage("no data provided"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("no data provided", true), HttpStatus.BAD_REQUEST);
         }
 
         if (personService.findByUsername(p.getUsername()) == null) {
@@ -50,17 +50,17 @@ public class PersonsController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody(required = false) PersonResource p, HttpServletRequest request) {
         if (p.getUsername().isBlank() || p.getPasswordHash().isBlank()) {
-            return new ResponseEntity<>(new ErrorMessage("username or password invalid"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("username or password invalid", true), HttpStatus.BAD_REQUEST);
         }
         Person person = personService.findByUsername(p.getUsername());
         if (person == null) {
-            return new ResponseEntity<>(new ErrorMessage("username invalid"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("username invalid", true), HttpStatus.BAD_REQUEST);
         }
         if (person.getPasswordHash().equals(p.getPasswordHash())) {
             request.getSession().setAttribute("person", person.getId().toString());
             return new ResponseEntity<>(new PersonResource(person.getUsername()), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorMessage("password invalid"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorMessage("password invalid", true), HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
