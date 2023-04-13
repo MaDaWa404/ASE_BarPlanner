@@ -28,7 +28,6 @@ public class Person {
     private String firstname;
 
 
-
     protected Person() {
         //default constructor for JPA
     }

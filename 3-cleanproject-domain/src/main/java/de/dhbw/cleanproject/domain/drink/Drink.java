@@ -57,16 +57,16 @@ public class Drink {
         return amount;
     }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     public UUID getId() {
         return id;
     }
 
     public UUID getBar() {
         return bar;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
     }
 
     @Override

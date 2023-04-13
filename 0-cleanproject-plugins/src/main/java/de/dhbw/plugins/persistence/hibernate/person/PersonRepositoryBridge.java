@@ -23,6 +23,7 @@ public class PersonRepositoryBridge implements PersonRepository {
     public Person findPersonById(UUID id) {
         return this.springDataPersonRepository.findPersonById(id);
     }
+
     @Override
     public Person findPersonByUsername(String username) {
         return this.springDataPersonRepository.findPersonByUsername(username);

@@ -1,11 +1,11 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>ASE BarPlanner</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.js"></script>
 
     <script th:src="@{/main.js}"></script>
-    <link th:href="@{/main.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/main.css}"/>
 </head>
 <body ng-app="DrinkManagement" ng-controller="DrinkController">
 <div class="page-wrapper">
@@ -21,19 +21,19 @@
             <table>
                 <tr>
                     <td>Name</td>
-                    <td><input type="text" ng-model="drinkForm.title"/></td>
+                    <td><input ng-model="drinkForm.title" type="text"/></td>
                 </tr>
                 <tr>
                     <td>Price</td>
-                    <td><input type="text" ng-model="drinkForm.price"/></td>
+                    <td><input ng-model="drinkForm.price" type="text"/></td>
                 </tr>
                 <tr>
                     <td>Amount</td>
-                    <td><input type="text" ng-model="drinkForm.amount"/></td>
+                    <td><input ng-model="drinkForm.amount" type="text"/></td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input type="submit" value="Add drink" class="create-button"/>
+                        <input class="create-button" type="submit" value="Add drink"/>
                     </td>
                 </tr>
             </table>
@@ -55,10 +55,10 @@
                 <td> {{ drink.price }}</td>
                 <td>{{ drink.amount }}</td>
                 <td>
-                    <a ng-click="editDrink(drink)" class="edit-button">Edit</a>
+                    <a class="edit-button" ng-click="editDrink(drink)">Edit</a>
                 </td>
                 <td>
-                    <a ng-click="deleteDrink(drink.title)" class="delete-button">Delete</a>
+                    <a class="delete-button" ng-click="deleteDrink(drink.title)">Delete</a>
                 </td>
             </tr>
         </table>
@@ -73,23 +73,23 @@
             <table>
                 <tr>
                     <td>username</td>
-                    <td><input type="text" ng-model="registerForm.username"/></td>
+                    <td><input ng-model="registerForm.username" type="text"/></td>
                 </tr>
                 <tr>
                     <td>password</td>
-                    <td><input type="password" ng-model="registerForm.passwordHash"/></td>
+                    <td><input ng-model="registerForm.passwordHash" type="password"/></td>
                 </tr>
                 <tr>
                     <td>lastname</td>
-                    <td><input type="text" ng-model="registerForm.lastname"/></td>
+                    <td><input ng-model="registerForm.lastname" type="text"/></td>
                 </tr>
                 <tr>
                     <td>firstname</td>
-                    <td><input type="text" ng-model="registerForm.firstname"/></td>
+                    <td><input ng-model="registerForm.firstname" type="text"/></td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input type="submit" value="Register" class="create-button"/>
+                        <input class="create-button" type="submit" value="Register"/>
                     </td>
                 </tr>
             </table>
@@ -101,15 +101,15 @@
             <table>
                 <tr>
                     <td>username</td>
-                    <td><input type="text" ng-model="loginForm.username"/></td>
+                    <td><input ng-model="loginForm.username" type="text"/></td>
                 </tr>
                 <tr>
                     <td>password</td>
-                    <td><input type="password" ng-model="loginForm.passwordHash"/></td>
+                    <td><input ng-model="loginForm.passwordHash" type="password"/></td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input type="submit" value="Login" class="create-button"/>
+                        <input class="create-button" type="submit" value="Login"/>
                     </td>
                 </tr>
             </table>
@@ -117,7 +117,7 @@
     </form>
     <fieldset ng-disabled="!username">
         <legend>log out</legend>
-        <button ng-click="logout()" class="delete-button">Logout</button>
+        <button class="delete-button" ng-click="logout()">Logout</button>
     </fieldset>
 </div>
 </body>

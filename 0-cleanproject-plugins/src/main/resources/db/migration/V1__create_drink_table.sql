@@ -1,17 +1,17 @@
 CREATE TABLE person
 (
-    id uuid not null,
-    username varchar not null,
+    id            uuid    not null,
+    username      varchar not null,
     password_hash varchar not null,
-    lastname varchar not null,
-    firstname varchar not null,
+    lastname      varchar not null,
+    firstname     varchar not null,
     constraint pk_user primary key (id)
 );
 CREATE TABLE bar
 (
     id            uuid    not null,
     title         varchar not null,
-    administrator uuid not null,
+    administrator uuid    not null,
     zip           INTEGER not null,
     city          varchar not null,
     street        varchar not null,
@@ -31,9 +31,9 @@ CREATE TABLE drink
 );
 CREATE TABLE purchase
 (
-    id uuid not null,
+    id     uuid not null,
     person uuid not null,
-    drink uuid not null,
+    drink  uuid not null,
     constraint pk_purchase primary key (id),
     constraint fk_person foreign key (person) references person,
     constraint fk_drink foreign key (drink) references drink

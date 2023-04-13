@@ -41,8 +41,8 @@ public class DrinksController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> getDrinks(@RequestParam(required = false) String title, HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
-        if(id == null) {
-            return new ResponseEntity<>(new ErrorMessage("not registered"),HttpStatus.BAD_REQUEST);
+        if (id == null) {
+            return new ResponseEntity<>(new ErrorMessage("not registered"), HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
         Bar b = barService.findBarByAdministrator(p.getId());
@@ -62,8 +62,8 @@ public class DrinksController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> addDrink(@RequestBody Drink d, HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
-        if(id == null) {
-            return new ResponseEntity<>(new ErrorMessage("not registered"),HttpStatus.BAD_REQUEST);
+        if (id == null) {
+            return new ResponseEntity<>(new ErrorMessage("not registered"), HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
         Bar b = barService.findBarByAdministrator(p.getId());
@@ -72,8 +72,8 @@ public class DrinksController {
         try {
             drink = new Drink(d.getTitle(), d.getPrice(), d.getAmount(), b.getId());
 
-        }   catch (IllegalArgumentException | NullPointerException exception) {
-            return new ResponseEntity<>(new ErrorMessage("no data provided"),HttpStatus.BAD_REQUEST);
+        } catch (IllegalArgumentException | NullPointerException exception) {
+            return new ResponseEntity<>(new ErrorMessage("no data provided"), HttpStatus.BAD_REQUEST);
         }
         if (drinkApplicationService.findByTitle(d.getTitle()) == null) {
             drink = drinkApplicationService.addDrink(drink);

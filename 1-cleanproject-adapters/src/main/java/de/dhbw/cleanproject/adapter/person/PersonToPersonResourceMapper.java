@@ -14,6 +14,6 @@ public class PersonToPersonResourceMapper implements Function<Person, PersonReso
     }
 
     private PersonResource map(final Person person) {
-        return new PersonResource(person.getUsername(), person.getPasswordHash());
+        return new PersonResource(person.getUsername(), person.getPasswordHash(), person.getLastname(), person.getFirstname());
     }
 }

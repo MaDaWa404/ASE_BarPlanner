@@ -8,7 +8,10 @@ import de.dhbw.plugins.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
@@ -29,13 +32,13 @@ public class BarsController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> addBar(@RequestBody Bar bar, HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
-        if(id == null) {
+        if (id == null) {
             return new ResponseEntity<>(new ErrorMessage("not registered"), HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
 
 
-        if(barService.findBarByAdministrator(p.getId()) == null) {
+        if (barService.findBarByAdministrator(p.getId()) == null) {
             Bar b = new Bar(bar.getTitle(), bar.getAdministrator(), bar.getZip(), bar.getCity(), bar.getStreet(), bar.getNumber());
             barService.save(b);
             return ResponseEntity
@@ -46,14 +49,14 @@ public class BarsController {
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity<?> removeBar(HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
-        if(id == null) {
+        if (id == null) {
             return new ResponseEntity<>(new ErrorMessage("not registered"), HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
 
         Bar b = barService.findBarByAdministrator(p.getId());
 
-        if(b != null) {
+        if (b != null) {
             barService.delete(b);
             return ResponseEntity
                     .status(204).build();

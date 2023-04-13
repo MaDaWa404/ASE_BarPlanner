@@ -29,6 +29,7 @@ public class DrinkApplicationService {
     public List<Drink> findDrinksByBar(UUID bar) {
         return this.drinkRepository.findDrinksByBar(bar);
     }
+
     public List<Drink> findDrinksByBarAndTitleContaining(UUID bar, String title) {
         return this.drinkRepository.findDrinksByBarAndTitleContaining(bar, title);
     }
