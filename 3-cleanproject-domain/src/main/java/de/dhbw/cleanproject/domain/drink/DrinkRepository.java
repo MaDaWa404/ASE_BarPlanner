@@ -13,6 +13,8 @@ public interface DrinkRepository {
 
     List<Drink> findDrinksByBarAndTitleContaining(UUID bar, String title);
 
+    Drink findDrinkByBarAndTitle(UUID bar, String title);
+
     Drink findByTitle(String title);
 
     Drink save(Drink drink);

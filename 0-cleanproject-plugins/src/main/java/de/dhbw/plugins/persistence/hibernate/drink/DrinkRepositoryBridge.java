@@ -39,6 +39,11 @@ public class DrinkRepositoryBridge implements DrinkRepository {
     }
 
     @Override
+    public Drink findDrinkByBarAndTitle(final UUID bar, final String title) {
+        return this.springDataDrinkRepository.findDrinkByBarAndTitle(bar, title);
+    }
+
+    @Override
     public Drink findByTitle(String title) {
         return this.springDataDrinkRepository.findByTitle(title);
     }

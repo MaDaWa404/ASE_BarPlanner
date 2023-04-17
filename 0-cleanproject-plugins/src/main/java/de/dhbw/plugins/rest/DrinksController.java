@@ -72,6 +72,9 @@ public class DrinksController {
             return new ResponseEntity<>(new ErrorMessage("not registered", true), HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
+
+        //TODO if person is null
+
         Bar b = barService.findBarByAdministrator(p.getId());
 
         if (b == null) {
@@ -84,11 +87,11 @@ public class DrinksController {
         } catch (IllegalArgumentException | NullPointerException exception) {
             return new ResponseEntity<>(new ErrorMessage("no data provided", true), HttpStatus.BAD_REQUEST);
         }
-        if (drinkApplicationService.findByTitle(d.getTitle()) == null) {
+        if (drinkApplicationService.findDrinkByBarAndTitle(b.getId(), d.getTitle()) == null) {
             drink = drinkApplicationService.addDrink(drink);
             return ResponseEntity
                     .created(URI.create(String.format("/drinks/%s", drink.getId()))).build();
-        } else return ResponseEntity.status(403).body("already exists");
+        } else return new ResponseEntity<>(new ErrorMessage("already exists", true), HttpStatus.FORBIDDEN);
     }
 
     @RequestMapping(method = RequestMethod.PATCH)
