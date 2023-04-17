@@ -13,7 +13,7 @@ table td, th {
     cursor: pointer;
 }
 
-.edit-button {
+.edit-button, .order-button {
     padding: 5px 10px;
     background: #25A6E1;
     cursor: pointer;

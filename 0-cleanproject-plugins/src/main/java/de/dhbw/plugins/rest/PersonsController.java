@@ -8,13 +8,10 @@ import de.dhbw.plugins.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/persons")
@@ -30,7 +27,20 @@ public class PersonsController {
         this.personToPersonResourceMapper = personToPersonResourceMapper;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @GetMapping
+    public Object getPerson(HttpServletRequest request) {
+        String id = (String) request.getSession().getAttribute("person");
+        if (id == null) {
+            return new ResponseEntity<>(ErrorMessage.notRegistered, HttpStatus.BAD_REQUEST);
+        }
+
+        // TODO remove passwordHash
+        PersonResource p = personToPersonResourceMapper.apply(personService.findByID(UUID.fromString(id)));
+        if (p == null) return new ResponseEntity<>(ErrorMessage.notRegistered, HttpStatus.BAD_REQUEST);
+        return p;
+    }
+
+    @PostMapping(value = "/register")
     public ResponseEntity<?> register(@RequestBody Person p, HttpServletRequest request) {
         Person person;
         try {
@@ -42,12 +52,11 @@ public class PersonsController {
         if (personService.findByUsername(p.getUsername()) == null) {
             person = personService.save(person);
             request.getSession().setAttribute("person", person.getId().toString());
-            return ResponseEntity
-                    .created(URI.create(String.format("/persons/%s", person.getId()))).build();
+            return new ResponseEntity<>(new PersonResource(person.getUsername()), HttpStatus.CREATED);
         } else return ResponseEntity.status(403).body("already exists");
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping(value = "/login")
     public ResponseEntity<?> login(@RequestBody(required = false) PersonResource p, HttpServletRequest request) {
         if (p.getUsername().isBlank() || p.getPasswordHash().isBlank()) {
             return new ResponseEntity<>(new ErrorMessage("username or password invalid", true), HttpStatus.BAD_REQUEST);
@@ -63,7 +72,7 @@ public class PersonsController {
         return new ResponseEntity<>(new ErrorMessage("password invalid", true), HttpStatus.BAD_REQUEST);
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @GetMapping(value = "/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
         request.getSession().invalidate();
         return new ResponseEntity<>(HttpStatus.OK);

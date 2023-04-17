@@ -30,6 +30,15 @@ public class BarRepositoryBridge implements BarRepository {
     }
 
     @Override
+    public Bar findBarById(UUID id) {
+        return this.springDataBarRepository.findBarById(id);
+    }
+
+    public List<Bar> findBarsByTitleContaining(String title) {
+        return this.springDataBarRepository.findBarsByTitleContaining(title);
+    }
+
+    @Override
     public Bar save(Bar bar) {
         return this.springDataBarRepository.save(bar);
     }

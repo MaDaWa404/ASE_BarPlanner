@@ -9,6 +9,10 @@ public interface BarRepository {
 
     Bar findBarByAdministrator(UUID administrator);
 
+    Bar findBarById(UUID id);
+
+    List<Bar> findBarsByTitleContaining(String title);
+
     Bar save(Bar bar);
 
     void delete(Bar bar);

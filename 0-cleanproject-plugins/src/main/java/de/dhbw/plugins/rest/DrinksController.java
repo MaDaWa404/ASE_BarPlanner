@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,7 +28,6 @@ public class DrinksController {
     private final DrinkApplicationService drinkApplicationService;
     private final PersonService personService;
     private final BarService barService;
-
     private final DrinkToDrinkResourceMapper drinkToDrinkResourceMapper;
 
     @Autowired
@@ -38,38 +38,49 @@ public class DrinksController {
         this.drinkToDrinkResourceMapper = drinkToDrinkResourceMapper;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public ResponseEntity<?> getDrinks(@RequestParam(required = false) String title, HttpServletRequest request) {
+        Map<String, Object> response;
+        UUID barId = (UUID) request.getSession().getAttribute("bar");
+        if (barId != null) {
+            Bar bar = barService.findBarById(barId);
+            List<Drink> drinks = drinkApplicationService.findDrinksByBar(bar.getId());
+            response = Map.of("bar", bar.getTitle(), "drinks", drinks);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+
         String id = (String) request.getSession().getAttribute("person");
         if (id == null) {
-            return new ResponseEntity<>(new ErrorMessage("not registered", false), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ErrorMessage.notRegistered, HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
+
+        //TODO if person is null
+
         Bar b = barService.findBarByAdministrator(p.getId());
 
-        Map<String, Object> response;
-
-        if (b == null) response = Map.of("username", p.getUsername());
+        if (b == null)
+            return new ResponseEntity<>(ErrorMessage.registerBarFirst, HttpStatus.BAD_REQUEST);
         else {
 
             if (title != null) {
                 response = Map.of("drinks", this.drinkApplicationService.findDrinksByBarAndTitleContaining(b.getId(), title).stream()
                         .map(drinkToDrinkResourceMapper)
-                        .collect(Collectors.toList()), "bar", b.getTitle(), "username", p.getUsername());
+                        .collect(Collectors.toList()), "bar", b.getTitle());
             } else {
                 response = Map.of("drinks", this.drinkApplicationService.findDrinksByBar(b.getId()).stream()
                         .map(drinkToDrinkResourceMapper)
-                        .collect(Collectors.toList()), "bar", b.getTitle(), "username", p.getUsername());
+                        .collect(Collectors.toList()), "bar", b.getTitle());
             }
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<?> addDrink(@RequestBody Drink d, HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
         if (id == null) {
-            return new ResponseEntity<>(new ErrorMessage("not registered", true), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ErrorMessage.notRegisteredAlert, HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
 
@@ -78,30 +89,30 @@ public class DrinksController {
         Bar b = barService.findBarByAdministrator(p.getId());
 
         if (b == null) {
-            return new ResponseEntity<>(new ErrorMessage("please register a bar first", true), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ErrorMessage.registerBarFirst, HttpStatus.BAD_REQUEST);
         }
 
         Drink drink;
         try {
             drink = new Drink(d.getTitle(), d.getPrice(), d.getAmount(), b.getId());
         } catch (IllegalArgumentException | NullPointerException exception) {
-            return new ResponseEntity<>(new ErrorMessage("no data provided", true), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ErrorMessage.noDataProvided, HttpStatus.BAD_REQUEST);
         }
         if (drinkApplicationService.findDrinkByBarAndTitle(b.getId(), d.getTitle()) == null) {
             drink = drinkApplicationService.addDrink(drink);
             return ResponseEntity
                     .created(URI.create(String.format("/drinks/%s", drink.getId()))).build();
-        } else return new ResponseEntity<>(new ErrorMessage("already exists", true), HttpStatus.FORBIDDEN);
+        } else return new ResponseEntity<>(ErrorMessage.alreadyExists, HttpStatus.FORBIDDEN);
     }
 
-    @RequestMapping(method = RequestMethod.PATCH)
+    @PatchMapping
     public DrinkResource updateAmount(@RequestBody Map<String, String> value) {
         String title = value.get("title");
         int amount = Integer.parseInt(value.get("amount"));
         return drinkToDrinkResourceMapper.apply(this.drinkApplicationService.updateAmount(title, amount));
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
+    @DeleteMapping
     public ResponseEntity<String> deleteDrink(@RequestBody String title) {
         if (drinkApplicationService.findByTitle(title) != null) {
             drinkApplicationService.deleteDrink(drinkApplicationService.findByTitle(title));

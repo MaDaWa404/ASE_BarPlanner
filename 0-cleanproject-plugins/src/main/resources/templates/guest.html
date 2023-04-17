@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ASE BarPlanner</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.js"></script>
+
+    <script th:src="@{/guest.js}"></script>
+    <link rel="stylesheet" th:href="@{/main.css}"/>
+</head>
+<body ng-app="GuestManagement" ng-controller="GuestController">
+<div class="page-wrapper">
+
+    <h1>
+        ASE BarPlanner
+    </h1>
+    <h2>Bar</h2>
+    <fieldset ng-disabled="bar">
+        <legend>select bar</legend>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+            </tr>
+            <tr ng-repeat="bar in bars">
+                <td>{{bar.title}}</td>
+                <td>{{bar.street + " " + bar.number + ", " + bar.zip + " " + bar.city}}</td>
+            </tr>
+        </table>
+    </fieldset>
+    <h3>{{bar}}</h3>
+    <fieldset ng-disabled="!bar">
+        <legend>View drinks</legend>
+        <table ng-if="drinks.length>=1">
+            <tr>
+                <th>Drink</th>
+                <th>Price</th>
+            </tr>
+            <tr ng-repeat="drink in drinks">
+                <td> {{ drink.title }}</td>
+                <td> {{ drink.price }}</td>
+                <td>
+                    <a class="order-button" ng-click="addToCart(drink)">Add to cart</a>
+                </td>
+
+            </tr>
+        </table>
+        <p ng-if="!bar">Please log in and select a bar to see drinks</p>
+    </fieldset>
+    <h2>Account</h2>
+    <p ng-if="username">Logged in as {{ username }}</p>
+    <p ng-if="!username">currently not logged in</p>
+    <form ng-submit="register()">
+        <fieldset ng-disabled="username">
+            <legend>Register new account</legend>
+            <table>
+                <tr>
+                    <td>username</td>
+                    <td><input ng-model="registerForm.username" type="text"/></td>
+                </tr>
+                <tr>
+                    <td>password</td>
+                    <td><input ng-model="registerForm.passwordHash" type="password"/></td>
+                </tr>
+                <tr>
+                    <td>lastname</td>
+                    <td><input ng-model="registerForm.lastname" type="text"/></td>
+                </tr>
+                <tr>
+                    <td>firstname</td>
+                    <td><input ng-model="registerForm.firstname" type="text"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input class="create-button" type="submit" value="Register"/>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+    <form ng-submit="login()">
+        <fieldset ng-disabled="username">
+            <legend>Log into existing account</legend>
+            <table>
+                <tr>
+                    <td>username</td>
+                    <td><input ng-model="loginForm.username" type="text"/></td>
+                </tr>
+                <tr>
+                    <td>password</td>
+                    <td><input ng-model="loginForm.passwordHash" type="password"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input class="create-button" type="submit" value="Login"/>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+    <fieldset ng-disabled="!username">
+        <legend>log out</legend>
+        <button class="delete-button" ng-click="logout()">Logout</button>
+    </fieldset>
+</div>
+</body>
+</html>

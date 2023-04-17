@@ -8,8 +8,25 @@ app.controller("DrinkController", function ($scope, $http) {
     $scope.bar = "";
 
     // Now load the data from server
+    _getUsername();
     _refreshDrinkData();
     _resetForms()
+
+
+    // HTTP GET - get username
+    function _getUsername() {
+        $http({
+            method: 'GET',
+            url: '/api/persons'
+        }).then(
+            function (res) { // success
+                $scope.username = res.data.username
+            },
+            function () { // error
+                $scope.username = ""
+            }
+        )
+    }
 
     // HTTP GET - get all drinks
     function _refreshDrinkData() {
@@ -18,16 +35,13 @@ app.controller("DrinkController", function ($scope, $http) {
             url: '/api/drinks'
         }).then(
             function (res) { // success
-                console.log(res.data)
                 $scope.drinks = res.data.drinks
                 $scope.bar = res.data.bar
-                $scope.username = res.data.username
             },
             function (res) { // error
                 _error(res)
                 $scope.drinks = []
                 $scope.bar = ""
-                $scope.username = ""
             }
         );
     }
@@ -52,8 +66,9 @@ app.controller("DrinkController", function ($scope, $http) {
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(_success, _error);
+        }).then(_successUser, _errorUser);
     }
+
     $scope.login = function () {
         $http({
             method: "POST",
@@ -62,19 +77,25 @@ app.controller("DrinkController", function ($scope, $http) {
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(_success, _error);
+        }).then(_successUser, _errorUser);
     }
+
     $scope.logout = function () {
         $scope.username = ""
         $http({
             method: "GET",
             url: '/api/persons/logout',
-        }).then(_success, _error);
+        }).then(_successUser, _errorUser);
     }
 
     function _success() {
-        _refreshDrinkData();
-        _resetForms();
+        _refreshDrinkData()
+        _resetForms()
+    }
+
+    function _successUser(res) {
+        $scope.username = res.data.username
+        _success(res)
     }
 
     function _error(res) {
@@ -82,7 +103,11 @@ app.controller("DrinkController", function ($scope, $http) {
             alert("Error: " + res.status + " : " + res.data.message)
         }
         console.log("Error: " + res.status + " : " + res.data.message)
+    }
 
+    function _errorUser(res) {
+        $scope.username = ""
+        _error(res)
     }
 
     function _resetForms() {

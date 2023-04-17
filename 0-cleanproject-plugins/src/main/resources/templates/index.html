@@ -63,8 +63,8 @@
                 </td>
             </tr>
         </table>
-        <p ng-if="drinks.length <= 0">Please add drinks first</p>
-        <p ng-if="!drinks">Please log in and register a bar to see drinks</p>
+        <p ng-if="bar && drinks.length <= 0">Please add drinks first</p>
+        <p ng-if="!bar">Please log in and register a bar to see drinks</p>
     </fieldset>
     <form ng-submit="registerBar()">
         <fieldset ng-disabled="bar || !username">
