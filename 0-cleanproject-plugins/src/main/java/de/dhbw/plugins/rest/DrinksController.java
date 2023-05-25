@@ -8,7 +8,6 @@ import de.dhbw.cleanproject.application.person.PersonService;
 import de.dhbw.cleanproject.domain.bar.Bar;
 import de.dhbw.cleanproject.domain.drink.Drink;
 import de.dhbw.cleanproject.domain.person.Person;
-import de.dhbw.plugins.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +50,7 @@ public class DrinksController {
 
         String id = (String) request.getSession().getAttribute("person");
         if (id == null) {
-            return new ResponseEntity<>(ErrorMessage.notRegistered, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
 
@@ -60,7 +59,7 @@ public class DrinksController {
         Bar b = barService.findBarByAdministrator(p.getId());
 
         if (b == null)
-            return new ResponseEntity<>(ErrorMessage.registerBarFirst, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         else {
 
             if (title != null) {
@@ -80,7 +79,7 @@ public class DrinksController {
     public ResponseEntity<?> addDrink(@RequestBody Drink d, HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
         if (id == null) {
-            return new ResponseEntity<>(ErrorMessage.notRegisteredAlert, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
 
@@ -89,20 +88,20 @@ public class DrinksController {
         Bar b = barService.findBarByAdministrator(p.getId());
 
         if (b == null) {
-            return new ResponseEntity<>(ErrorMessage.registerBarFirst, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         Drink drink;
         try {
             drink = new Drink(d.getTitle(), d.getPrice(), d.getAmount(), b.getId());
         } catch (IllegalArgumentException | NullPointerException exception) {
-            return new ResponseEntity<>(ErrorMessage.noDataProvided, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         if (drinkApplicationService.findDrinkByBarAndTitle(b.getId(), d.getTitle()) == null) {
             drink = drinkApplicationService.addDrink(drink);
             return ResponseEntity
                     .created(URI.create(String.format("/drinks/%s", drink.getId()))).build();
-        } else return new ResponseEntity<>(ErrorMessage.alreadyExists, HttpStatus.FORBIDDEN);
+        } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @PatchMapping

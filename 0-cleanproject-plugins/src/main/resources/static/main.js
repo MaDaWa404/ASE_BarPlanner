@@ -99,10 +99,7 @@ app.controller("DrinkController", function ($scope, $http) {
     }
 
     function _error(res) {
-        if (res.data.alert) {
-            alert("Error: " + res.status + " : " + res.data.message)
-        }
-        console.log("Error: " + res.status + " : " + res.data.message)
+        console.log("Error: " + res.status)
     }
 
     function _errorUser(res) {

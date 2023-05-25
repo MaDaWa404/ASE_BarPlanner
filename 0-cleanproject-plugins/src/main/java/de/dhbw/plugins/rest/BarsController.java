@@ -6,7 +6,6 @@ import de.dhbw.cleanproject.application.bar.BarService;
 import de.dhbw.cleanproject.application.person.PersonService;
 import de.dhbw.cleanproject.domain.bar.Bar;
 import de.dhbw.cleanproject.domain.person.Person;
-import de.dhbw.plugins.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,10 +51,10 @@ public class BarsController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addBar(@RequestBody Bar bar, HttpServletRequest request) {
+    public ResponseEntity<Object> addBar(@RequestBody Bar bar, HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
         if (id == null) {
-            return new ResponseEntity<>(new ErrorMessage("not registered", true), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
 
@@ -65,14 +64,14 @@ public class BarsController {
             barService.save(b);
             return ResponseEntity
                     .status(201).build();
-        } else return new ResponseEntity<>(ErrorMessage.alreadyHaveBar, HttpStatus.BAD_REQUEST);
+        } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping
-    public ResponseEntity<ErrorMessage> removeBar(HttpServletRequest request) {
+    public ResponseEntity<Object> removeBar(HttpServletRequest request) {
         String id = (String) request.getSession().getAttribute("person");
         if (id == null) {
-            return new ResponseEntity<>(new ErrorMessage("not registered", true), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Person p = personService.findByID(UUID.fromString(id));
 
@@ -81,7 +80,7 @@ public class BarsController {
         if (b != null) {
             barService.delete(b);
             return ResponseEntity.status(204).build();
-        } else return new ResponseEntity<>(ErrorMessage.notFound, HttpStatus.NOT_FOUND);
+        } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping(value = "select")
