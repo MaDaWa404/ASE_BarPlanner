@@ -2,6 +2,7 @@ package de.dhbw.plugins.rest;
 
 import de.dhbw.cleanproject.adapter.person.PersonResource;
 import de.dhbw.cleanproject.adapter.person.PersonToPersonResourceMapper;
+import de.dhbw.cleanproject.application.exceptions.MyException;
 import de.dhbw.cleanproject.application.person.PersonService;
 import de.dhbw.cleanproject.domain.person.Person;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/persons")
@@ -27,20 +27,21 @@ public class PersonsController {
     }
 
     @GetMapping
-    public Object getPerson(HttpServletRequest request) {
-        String id = (String) request.getSession().getAttribute("person");
-        if (id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> getPerson(HttpServletRequest request) {
+        Person p;
+        try {
+            String id = Helper.getIdFromRequest(request);
+            p = personService.getPersonFromId(id);
+        } catch (MyException e) {
+            return new ResponseEntity<>(e.getCode(), HttpStatus.BAD_REQUEST);
         }
 
         // TODO remove passwordHash
-        PersonResource p = personToPersonResourceMapper.apply(personService.findByID(UUID.fromString(id)));
-        if (p == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return p;
+        return new ResponseEntity<>(personToPersonResourceMapper.apply(p), HttpStatus.OK);
     }
 
     @PostMapping(value = "/register")
-    public ResponseEntity<?> register(@RequestBody Person p, HttpServletRequest request) {
+    public ResponseEntity<Object> register(@RequestBody Person p, HttpServletRequest request) {
         Person person;
         try {
             person = new Person(p.getUsername(), p.getPasswordHash(), p.getLastname(), p.getFirstname());
@@ -56,7 +57,7 @@ public class PersonsController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<?> login(@RequestBody(required = false) PersonResource p, HttpServletRequest request) {
+    public ResponseEntity<Object> login(@RequestBody(required = false) PersonResource p, HttpServletRequest request) {
         if (p.getUsername().isBlank() || p.getPasswordHash().isBlank()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -72,7 +73,7 @@ public class PersonsController {
     }
 
     @GetMapping(value = "/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request) {
+    public ResponseEntity<Object> logout(HttpServletRequest request) {
         request.getSession().invalidate();
         return new ResponseEntity<>(HttpStatus.OK);
     }

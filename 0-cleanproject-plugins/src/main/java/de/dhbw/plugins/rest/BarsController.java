@@ -3,6 +3,7 @@ package de.dhbw.plugins.rest;
 import de.dhbw.cleanproject.adapter.bar.BarResource;
 import de.dhbw.cleanproject.adapter.bar.BarToBarResourceMapper;
 import de.dhbw.cleanproject.application.bar.BarService;
+import de.dhbw.cleanproject.application.exceptions.MyException;
 import de.dhbw.cleanproject.application.person.PersonService;
 import de.dhbw.cleanproject.domain.bar.Bar;
 import de.dhbw.cleanproject.domain.person.Person;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -52,12 +52,13 @@ public class BarsController {
 
     @PostMapping
     public ResponseEntity<Object> addBar(@RequestBody Bar bar, HttpServletRequest request) {
-        String id = (String) request.getSession().getAttribute("person");
-        if (id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        Person p;
+        try {
+            String id = Helper.getIdFromRequest(request);
+            p = personService.getPersonFromId(id);
+        } catch (MyException e) {
+            return new ResponseEntity<>(e.getCode(), HttpStatus.BAD_REQUEST);
         }
-        Person p = personService.findByID(UUID.fromString(id));
-
 
         if (barService.findBarByAdministrator(p.getId()) == null) {
             Bar b = new Bar(bar.getTitle(), p.getId(), bar.getZip(), bar.getCity(), bar.getStreet(), bar.getNumber());
@@ -69,18 +70,14 @@ public class BarsController {
 
     @DeleteMapping
     public ResponseEntity<Object> removeBar(HttpServletRequest request) {
-        String id = (String) request.getSession().getAttribute("person");
-        if (id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        Bar b;
+        try {
+            b = Helper.getBarFromRequest(request, personService, barService);
+        } catch (MyException e) {
+            return new ResponseEntity<>(e.getCode(), HttpStatus.BAD_REQUEST);
         }
-        Person p = personService.findByID(UUID.fromString(id));
-
-        Bar b = barService.findBarByAdministrator(p.getId());
-
-        if (b != null) {
-            barService.delete(b);
-            return ResponseEntity.status(204).build();
-        } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        barService.delete(b);
+        return ResponseEntity.status(204).build();
     }
 
     @PostMapping(value = "select")

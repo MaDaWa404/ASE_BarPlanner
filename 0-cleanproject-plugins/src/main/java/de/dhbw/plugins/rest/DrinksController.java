@@ -4,12 +4,10 @@ import de.dhbw.cleanproject.adapter.drink.DrinkResource;
 import de.dhbw.cleanproject.adapter.drink.DrinkToDrinkResourceMapper;
 import de.dhbw.cleanproject.application.bar.BarService;
 import de.dhbw.cleanproject.application.drink.DrinkApplicationService;
+import de.dhbw.cleanproject.application.exceptions.MyException;
 import de.dhbw.cleanproject.application.person.PersonService;
 import de.dhbw.cleanproject.domain.bar.Bar;
 import de.dhbw.cleanproject.domain.drink.Drink;
-import de.dhbw.cleanproject.domain.person.Person;
-import de.dhbw.plugins.exceptions.MyErrorCode;
-import de.dhbw.plugins.exceptions.MyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -42,32 +39,13 @@ public class DrinksController {
     public ResponseEntity<Object> getDrinks(@RequestParam(required = false) String title, HttpServletRequest request) {
         Bar b;
         try {
-            String id = getIdFromRequest(request);
-            Person p = getPersonFromId(id);
-            b = getBarFromPerson(p);
+            b = Helper.getBarFromRequest(request, personService, barService);
         } catch (MyException e) {
             return new ResponseEntity<>(e.getCode(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(getDrinksAsMap(title, b), HttpStatus.OK);
     }
 
-    private String getIdFromRequest(HttpServletRequest request) throws MyException {
-        String id = (String) request.getSession().getAttribute("person");
-        if (id == null) throw new MyException(MyErrorCode.NO_ID);
-        return id;
-    }
-
-    private Person getPersonFromId(String id) throws MyException {
-        Person p = personService.findByID(UUID.fromString(id));
-        if (p == null) throw new MyException(MyErrorCode.NO_PERSON);
-        return p;
-    }
-
-    private Bar getBarFromPerson(Person p) throws MyException {
-        Bar b = barService.findBarByAdministrator(p.getId());
-        if (b == null) throw new MyException(MyErrorCode.NO_BAR);
-        return b;
-    }
 
     private Map<String, Object> getDrinksAsMap(String title, Bar bar) {
         Map<String, Object> response;
@@ -84,21 +62,13 @@ public class DrinksController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addDrink(@RequestBody Drink d, HttpServletRequest request) {
-        String id = (String) request.getSession().getAttribute("person");
-        if (id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> addDrink(@RequestBody Drink d, HttpServletRequest request) {
+        Bar b;
+        try {
+            b = Helper.getBarFromRequest(request, personService, barService);
+        } catch (MyException e) {
+            return new ResponseEntity<>(e.getCode(), HttpStatus.BAD_REQUEST);
         }
-        Person p = personService.findByID(UUID.fromString(id));
-
-        //TODO if person is null
-
-        Bar b = barService.findBarByAdministrator(p.getId());
-
-        if (b == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
         Drink drink;
         try {
             drink = new Drink(d.getTitle(), d.getPrice(), d.getAmount(), b.getId());
@@ -114,6 +84,7 @@ public class DrinksController {
 
     @PatchMapping
     public DrinkResource updateAmount(@RequestBody Map<String, String> value) {
+        //TODO make sensitive to bar / user
         String title = value.get("title");
         int amount = Integer.parseInt(value.get("amount"));
         return drinkToDrinkResourceMapper.apply(this.drinkApplicationService.updateAmount(title, amount));
@@ -121,6 +92,7 @@ public class DrinksController {
 
     @DeleteMapping
     public ResponseEntity<String> deleteDrink(@RequestBody String title) {
+        //TODO make sensitive to bar / user
         if (drinkApplicationService.findByTitle(title) != null) {
             drinkApplicationService.deleteDrink(drinkApplicationService.findByTitle(title));
             return ResponseEntity.ok().build();

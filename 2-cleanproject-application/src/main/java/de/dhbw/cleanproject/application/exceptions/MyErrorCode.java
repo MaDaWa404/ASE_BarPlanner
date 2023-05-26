@@ -1,4 +1,4 @@
-package de.dhbw.plugins.exceptions;
+package de.dhbw.cleanproject.application.exceptions;
 
 public enum MyErrorCode {
     NO_ID,

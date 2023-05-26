@@ -1,7 +1,10 @@
 package de.dhbw.cleanproject.application.bar;
 
+import de.dhbw.cleanproject.application.exceptions.MyErrorCode;
+import de.dhbw.cleanproject.application.exceptions.MyException;
 import de.dhbw.cleanproject.domain.bar.Bar;
 import de.dhbw.cleanproject.domain.bar.BarRepository;
+import de.dhbw.cleanproject.domain.person.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,5 +43,11 @@ public class BarService {
 
     public void delete(Bar bar) {
         barRepository.delete(bar);
+    }
+
+    public Bar getBarFromPerson(Person p) throws MyException {
+        Bar b = findBarByAdministrator(p.getId());
+        if (b == null) throw new MyException(MyErrorCode.NO_BAR);
+        return b;
     }
 }
