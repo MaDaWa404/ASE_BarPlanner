@@ -8,6 +8,8 @@ import de.dhbw.cleanproject.application.person.PersonService;
 import de.dhbw.cleanproject.domain.bar.Bar;
 import de.dhbw.cleanproject.domain.drink.Drink;
 import de.dhbw.cleanproject.domain.person.Person;
+import de.dhbw.plugins.exceptions.MyErrorCode;
+import de.dhbw.plugins.exceptions.MyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -38,41 +39,48 @@ public class DrinksController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getDrinks(@RequestParam(required = false) String title, HttpServletRequest request) {
-        Map<String, Object> response;
-        UUID barId = (UUID) request.getSession().getAttribute("bar");
-        if (barId != null) {
-            Bar bar = barService.findBarById(barId);
-            List<Drink> drinks = drinkApplicationService.findDrinksByBar(bar.getId());
-            response = Map.of("bar", bar.getTitle(), "drinks", drinks);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<Object> getDrinks(@RequestParam(required = false) String title, HttpServletRequest request) {
+        Bar b;
+        try {
+            String id = getIdFromRequest(request);
+            Person p = getPersonFromId(id);
+            b = getBarFromPerson(p);
+        } catch (MyException e) {
+            return new ResponseEntity<>(e.getCode(), HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>(getDrinksAsMap(title, b), HttpStatus.OK);
+    }
 
+    private String getIdFromRequest(HttpServletRequest request) throws MyException {
         String id = (String) request.getSession().getAttribute("person");
-        if (id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        if (id == null) throw new MyException(MyErrorCode.NO_ID);
+        return id;
+    }
+
+    private Person getPersonFromId(String id) throws MyException {
         Person p = personService.findByID(UUID.fromString(id));
+        if (p == null) throw new MyException(MyErrorCode.NO_PERSON);
+        return p;
+    }
 
-        //TODO if person is null
-
+    private Bar getBarFromPerson(Person p) throws MyException {
         Bar b = barService.findBarByAdministrator(p.getId());
+        if (b == null) throw new MyException(MyErrorCode.NO_BAR);
+        return b;
+    }
 
-        if (b == null)
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        else {
-
-            if (title != null) {
-                response = Map.of("drinks", this.drinkApplicationService.findDrinksByBarAndTitleContaining(b.getId(), title).stream()
-                        .map(drinkToDrinkResourceMapper)
-                        .collect(Collectors.toList()), "bar", b.getTitle());
-            } else {
-                response = Map.of("drinks", this.drinkApplicationService.findDrinksByBar(b.getId()).stream()
-                        .map(drinkToDrinkResourceMapper)
-                        .collect(Collectors.toList()), "bar", b.getTitle());
-            }
+    private Map<String, Object> getDrinksAsMap(String title, Bar bar) {
+        Map<String, Object> response;
+        if (title != null) {
+            response = Map.of("drinks", this.drinkApplicationService
+                    .findDrinksByBarAndTitleContaining(bar.getId(), title).stream().map(drinkToDrinkResourceMapper)
+                    .collect(Collectors.toList()), "bar", bar.getTitle());
+        } else {
+            response = Map.of("drinks", this.drinkApplicationService
+                    .findDrinksByBar(bar.getId()).stream().map(drinkToDrinkResourceMapper)
+                    .collect(Collectors.toList()), "bar", bar.getTitle());
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return response;
     }
 
     @PostMapping

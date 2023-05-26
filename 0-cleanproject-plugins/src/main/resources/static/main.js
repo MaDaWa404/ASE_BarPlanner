@@ -99,7 +99,8 @@ app.controller("DrinkController", function ($scope, $http) {
     }
 
     function _error(res) {
-        console.log("Error: " + res.status)
+        alert("Username or password incorrect")
+        console.log("Error: " + res.status + ": " + res.data)
     }
 
     function _errorUser(res) {
