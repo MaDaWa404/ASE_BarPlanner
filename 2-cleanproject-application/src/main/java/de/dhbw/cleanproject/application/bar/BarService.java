@@ -25,16 +25,18 @@ public class BarService {
         return barRepository.findAllBars();
     }
 
-    public Bar findBarById(UUID id) {
-        return barRepository.findBarById(id);
-    }
-
     public Bar findBarByAdministrator(UUID id) {
         return barRepository.findBarByAdministrator(id);
     }
 
     public List<Bar> findBarsByTitleContaining(String title) {
         return barRepository.findBarsByTitleContaining(title);
+    }
+
+    public Bar getBarByTitle(String title) throws MyException {
+        Bar b = barRepository.findBarByTitle(title);
+        if (b == null) throw new MyException(MyErrorCode.NO_BAR);
+        return b;
     }
 
     public Bar save(Bar bar) {

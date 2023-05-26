@@ -11,6 +11,8 @@ public interface BarRepository {
 
     Bar findBarById(UUID id);
 
+    Bar findBarByTitle(String title);
+
     List<Bar> findBarsByTitleContaining(String title);
 
     Bar save(Bar bar);

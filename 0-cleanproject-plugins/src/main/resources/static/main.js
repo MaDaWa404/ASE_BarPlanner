@@ -3,16 +3,17 @@ var app = angular.module("GuestManagement", []);
 // Controller Part
 app.controller("GuestController", function ($scope, $http) {
 
-    $scope.drinks = [];
-    $scope.username = "";
-    $scope.bar = "";
-    $scope.bars = [];
+    $scope.selectedBar = ""
+    $scope.drinks = []
+    $scope.username = ""
+    $scope.bar = ""
+    $scope.bars = []
+    $scope.cart = []
 
     // Now load the data from server
-    _getUsername();
-    _getBars();
-    _refreshDrinkData();
-    _resetForms()
+    _getUsername()
+    _getBars()
+    _refreshDrinkData()
 
 
     function _getBars() {
@@ -49,7 +50,7 @@ app.controller("GuestController", function ($scope, $http) {
     function _refreshDrinkData() {
         $http({
             method: 'GET',
-            url: '/api/drinks'
+            url: '/api/drinks?selectedBar=' + $scope.selectedBar,
         }).then(
             function (res) { // success
                 $scope.drinks = res.data.drinks
@@ -62,6 +63,28 @@ app.controller("GuestController", function ($scope, $http) {
             }
         );
     }
+
+    $scope.selectBar = function (title) {
+        $scope.selectedBar = title
+        _refreshDrinkData()
+    }
+
+    $scope.order = function (drink) {
+        console.log($scope.selectedBar)
+        $http({
+            method: 'POST',
+            url: '/api/purchases',
+            data: angular.toJson({title: drink.title, selectedBar: $scope.selectedBar})
+        }).then(
+            function (res) { // success
+                $scope.cart = res.data.cart
+            },
+            function (res) { // error
+                _error(res)
+            }
+        );
+    }
+
 
     $scope.register = function () {
         $http({

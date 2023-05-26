@@ -15,6 +15,8 @@
     </h1>
     <a href="/owner">Own a bar? Click here to enter owner mode</a>
     <h2>Bar</h2>
+    <span ng-if="selectedBar">{{ selectedBar }}</span>
+    <button class="delete-button" ng-click="selectBar('')" ng-if="selectedBar">Deselect</button>
     <fieldset ng-disabled="bar">
         <legend>select bar</legend>
         <table>
@@ -25,6 +27,7 @@
             <tr ng-repeat="bar in bars">
                 <td>{{bar.title}}</td>
                 <td>{{bar.street + " " + bar.number + ", " + bar.zip + " " + bar.city}}</td>
+                <td><a class="create-button" ng-click="selectBar(bar.title)">Select</a></td>
             </tr>
         </table>
     </fieldset>
@@ -40,7 +43,7 @@
                 <td> {{ drink.title }}</td>
                 <td> {{ drink.price }}</td>
                 <td>
-                    <a class="order-button" ng-click="addToCart(drink)">Add to cart</a>
+                    <a class="order-button" ng-click="order(drink)">Order</a>
                 </td>
 
             </tr>

@@ -13,4 +13,6 @@ public interface SpringDataBarRepository extends JpaRepository<Bar, UUID> {
     Bar findBarById(UUID id);
 
     List<Bar> findBarsByTitleContaining(String title);
+
+    Bar findBarByTitle(String title);
 }

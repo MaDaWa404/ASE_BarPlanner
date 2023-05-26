@@ -36,10 +36,14 @@ public class DrinksController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getDrinks(@RequestParam(required = false) String title, HttpServletRequest request) {
+    public ResponseEntity<Object> getDrinks(@RequestParam(required = false) String title, @RequestParam(required = false) String selectedBar, HttpServletRequest request) {
         Bar b;
         try {
-            b = Helper.getBarFromRequest(request, personService, barService);
+            if (selectedBar != null) {
+                b = barService.getBarByTitle(selectedBar);
+            } else {
+                b = Helper.getBarFromRequest(request, personService, barService);
+            }
         } catch (MyException e) {
             return new ResponseEntity<>(e.getCode(), HttpStatus.BAD_REQUEST);
         }
