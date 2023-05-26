@@ -7,100 +7,45 @@
     <script th:src="@{/main.js}"></script>
     <link rel="stylesheet" th:href="@{/main.css}"/>
 </head>
-<body ng-app="DrinkManagement" ng-controller="DrinkController">
+<body ng-app="GuestManagement" ng-controller="GuestController">
 <div class="page-wrapper">
 
     <h1>
         ASE BarPlanner
     </h1>
+    <a href="/owner">Own a bar? Click here to enter owner mode</a>
     <h2>Bar</h2>
+    <fieldset ng-disabled="bar">
+        <legend>select bar</legend>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+            </tr>
+            <tr ng-repeat="bar in bars">
+                <td>{{bar.title}}</td>
+                <td>{{bar.street + " " + bar.number + ", " + bar.zip + " " + bar.city}}</td>
+            </tr>
+        </table>
+    </fieldset>
     <h3>{{bar}}</h3>
-
-    <form ng-submit="addDrink()">
-        <fieldset ng-disabled="!bar">
-            <legend>Add drink</legend>
-            <table>
-                <tr>
-                    <td>Name</td>
-                    <td><input ng-model="drinkForm.title" type="text"/></td>
-                </tr>
-                <tr>
-                    <td>Price</td>
-                    <td><input ng-model="drinkForm.price" type="text"/></td>
-                </tr>
-                <tr>
-                    <td>Amount</td>
-                    <td><input ng-model="drinkForm.amount" type="text"/></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input class="create-button" type="submit" value="Add drink"/>
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-    </form>
-    <br>
     <fieldset ng-disabled="!bar">
         <legend>View drinks</legend>
-        <table ng-if="drinks.length >= 1">
+        <table ng-if="drinks.length>=1">
             <tr>
-                <th>Title</th>
+                <th>Drink</th>
                 <th>Price</th>
-                <th>Amount</th>
-                <th></th>
-                <th></th>
             </tr>
             <tr ng-repeat="drink in drinks">
                 <td> {{ drink.title }}</td>
                 <td> {{ drink.price }}</td>
-                <td>{{ drink.amount }}</td>
                 <td>
-                    <a class="edit-button" ng-click="editDrink(drink)">Edit</a>
+                    <a class="order-button" ng-click="addToCart(drink)">Add to cart</a>
                 </td>
-                <td>
-                    <a class="delete-button" ng-click="deleteDrink(drink.title)">Delete</a>
-                </td>
+
             </tr>
         </table>
-        <p ng-if="bar && drinks.length <= 0">Please add drinks first</p>
-        <p ng-if="!bar">Please log in and register a bar to see drinks</p>
-    </fieldset>
-    <form ng-submit="registerBar()">
-        <fieldset ng-disabled="bar || !username">
-            <legend>Register new bar</legend>
-            <table>
-                <tr>
-                    <td>name</td>
-                    <td><input ng-model="registerBarForm.title" type="text"/></td>
-                </tr>
-                <tr>
-                    <td>zip</td>
-                    <td><input ng-model="registerBarForm.zip" type="number"/></td>
-                </tr>
-                <tr>
-                    <td>city</td>
-                    <td><input ng-model="registerBarForm.city" type="text"/></td>
-                </tr>
-                <tr>
-                    <td>street</td>
-                    <td><input ng-model="registerBarForm.street" type="text"/></td>
-                </tr>
-                <tr>
-                    <td>number</td>
-                    <td><input ng-model="registerBarForm.number" type="number"/></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input class="create-button" type="submit" value="Register Bar"/>
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-    </form>
-    <fieldset ng-disabled="!bar">
-        <legend>Delete Bar</legend>
-        <button class="delete-button" ng-click="deleteBar()">Delete bar</button>
+        <p ng-if="!bar">Please log in and select a bar to see drinks</p>
     </fieldset>
     <h2>Account</h2>
     <p ng-if="username">Logged in as {{ username }}</p>

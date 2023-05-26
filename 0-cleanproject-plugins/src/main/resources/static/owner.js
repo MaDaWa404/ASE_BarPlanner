@@ -1,34 +1,17 @@
-var app = angular.module("GuestManagement", []);
+var app = angular.module("DrinkManagement", []);
 
 // Controller Part
-app.controller("GuestController", function ($scope, $http) {
+app.controller("DrinkController", function ($scope, $http) {
 
     $scope.drinks = [];
     $scope.username = "";
     $scope.bar = "";
-    $scope.bars = [];
 
     // Now load the data from server
     _getUsername();
-    _getBars();
     _refreshDrinkData();
     _resetForms()
 
-
-    function _getBars() {
-        $http({
-            method: 'GET',
-            url: '/api/bars'
-        }).then(
-            function (res) { // success
-                $scope.bars = res.data.bars
-            },
-            function (res) { // error
-                _error(res)
-                $scope.bars = []
-            }
-        );
-    }
 
     // HTTP GET - get username
     function _getUsername() {
@@ -62,6 +45,18 @@ app.controller("GuestController", function ($scope, $http) {
             }
         );
     }
+
+    // HTTP POST for adding drinks
+    $scope.addDrink = function () {
+        $http({
+            method: "POST",
+            url: '/api/drinks',
+            data: angular.toJson($scope.drinkForm),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(_success, _error);
+    };
 
     $scope.register = function () {
         $http({
@@ -104,11 +99,11 @@ app.controller("GuestController", function ($scope, $http) {
     }
 
     function _error(res) {
+        alert("Username or password incorrect")
         console.log("Error: " + res.status + ": " + res.data)
     }
 
     function _errorUser(res) {
-        alert("Username or password incorrect")
         $scope.username = ""
         _error(res)
     }
@@ -138,4 +133,33 @@ app.controller("GuestController", function ($scope, $http) {
         }
     }
 
+    //HTTP DELETE for deleting drinks
+    $scope.deleteDrink = function (title) {
+        $http({
+            method: "DELETE",
+            url: '/api/drinks',
+            data: title,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(_success, _error);
+    }
+
+    $scope.registerBar = function () {
+        $http({
+            method: "POST",
+            url: '/api/bars',
+            data: angular.toJson($scope.registerBarForm),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(_success, _error);
+    }
+
+    $scope.deleteBar = function () {
+        $http({
+            method: "DELETE",
+            url: '/api/bars',
+        }).then(_success, _error);
+    }
 })

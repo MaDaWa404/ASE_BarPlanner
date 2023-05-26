@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
-    @GetMapping(value = "guest")
+    @GetMapping(value = "owner")
     public String get() {
-        return "guest";
+        return "owner";
     }
 
 }
