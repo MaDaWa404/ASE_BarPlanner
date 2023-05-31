@@ -38,7 +38,7 @@ public class PurchasesController {
     }
 
     @PostMapping()
-    public ResponseEntity<Object> order(@RequestBody Map<String, String> map, HttpServletRequest request) {
+    public ResponseEntity<Object> createOrder(@RequestBody Map<String, String> map, HttpServletRequest request) {
         Person p;
         Drink d;
         try {

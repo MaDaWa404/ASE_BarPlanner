@@ -55,6 +55,7 @@ public class PersonsController {
 
     @PostMapping(value = "/login")
     public ResponseEntity<Object> login(@RequestBody PersonResource p, HttpServletRequest request) {
+        if (p == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         if (p.getUsername().isBlank() || p.getPasswordHash().isBlank()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

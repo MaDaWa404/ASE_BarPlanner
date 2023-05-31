@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>C:/Users/Marcel/IdeaProjects/ASE_BarPlanner</OriginalElement>
+  <nodes>
+    <node x="1727.25" y="211.5">de.dhbw.cleanproject.application.exceptions.MyErrorCode</node>
+    <node x="1956.5" y="637.5">de.dhbw.cleanproject.domain.bar.Bar</node>
+    <node x="954.0" y="697.0">de.dhbw.cleanproject.domain.bar.BarRepository</node>
+    <node x="1670.0" y="383.5">de.dhbw.tests.TestingDataSourceConfig</node>
+    <node x="1565.25" y="211.5">de.dhbw.cleanproject.adapter.bar.BarResource</node>
+    <node x="971.0" y="533.5">de.dhbw.plugins.persistence.hibernate.drink.DrinkRepositoryBridge</node>
+    <node x="1430.0" y="384.0">de.dhbw.CleanProjectApplication</node>
+    <node x="2404.5" y="533.5">de.dhbw.plugins.persistence.hibernate.person.PersonRepositoryBridge</node>
+    <node x="1832.5" y="637.5">de.dhbw.cleanproject.domain.person.Person</node>
+    <node x="-134.0" y="533.5">de.dhbw.plugins.persistence.hibernate.purchase.PurchaseRepositoryBridge</node>
+    <node x="1980.5" y="533.5">de.dhbw.cleanproject.application.person.PersonService</node>
+    <node x="67.5" y="142.5">de.dhbw.cleanproject.application.purchase.OrderService</node>
+    <node x="1127.0" y="697.0">de.dhbw.plugins.persistence.hibernate.drink.SpringDataDrinkRepository</node>
+    <node x="562.0" y="384.0">de.dhbw.plugins.rest.Helper</node>
+    <node x="2191.0" y="384.0">de.dhbw.plugins.rest.BarsController</node>
+    <node x="1388.0" y="697.0">de.dhbw.plugins.persistence.hibernate.bar.SpringDataBarRepository</node>
+    <node x="1336.75" y="533.5">de.dhbw.plugins.persistence.hibernate.bar.BarRepositoryBridge</node>
+    <node x="1546.75" y="260.5">MavenWrapperDownloader</node>
+    <node x="119.0" y="533.5">de.dhbw.cleanproject.adapter.drink.DrinkToDrinkResourceMapper</node>
+    <node x="1133.0" y="384.0">de.dhbw.cleanproject.adapter.person.PersonToPersonResourceMapper</node>
+    <node x="165.0" y="384.0">de.dhbw.plugins.rest.DrinksController</node>
+    <node x="583.0" y="533.5">de.dhbw.cleanproject.application.drink.DrinkApplicationService</node>
+    <node x="125.0" y="260.5">de.dhbw.plugins.persistence.hibernate.purchase.SpringDataPurchaseRepository</node>
+    <node x="1796.5" y="533.5">de.dhbw.tests.RepositoryTests</node>
+    <node x="398.0" y="533.5">de.dhbw.cleanproject.application.bar.PurchaseService</node>
+    <node x="1628.4578096947935" y="93.5">de.dhbw.cleanproject.adapter.person.PersonResource</node>
+    <node x="768.0" y="697.0">de.dhbw.cleanproject.domain.drink.DrinkRepository</node>
+    <node x="1762.0" y="320.0">de.dhbw.cleanproject.application.exceptions.MyException</node>
+    <node x="866.0" y="384.0">de.dhbw.cleanproject.adapter.person.PersonToPersonDTOMapper</node>
+    <node x="341.25" y="697.0">de.dhbw.cleanproject.domain.purchase.PurchaseRepository</node>
+    <node x="1851.0" y="34.5">de.dhbw.cleanproject.domain.purchase.Purchase</node>
+    <node x="2246.25" y="697.0">de.dhbw.cleanproject.domain.person.PersonRepository</node>
+    <node x="1717.5" y="637.5">de.dhbw.cleanproject.domain.drink.Drink</node>
+    <node x="2365.0" y="384.0">de.dhbw.plugins.rest.PersonsController</node>
+    <node x="1219.6804308797127" y="71.0">de.dhbw.cleanproject.adapter.drink.DrinkResource</node>
+    <node x="863.25" y="320.0">de.dhbw.cleanproject.adapter.person.PersonDTO</node>
+    <node x="2441.25" y="697.0">de.dhbw.plugins.persistence.hibernate.person.SpringDataPersonRepository</node>
+    <node x="687.0" y="384.0">de.dhbw.plugins.userInterface.MainController</node>
+    <node x="822.0" y="533.5">de.dhbw.cleanproject.application.bar.BarService</node>
+    <node x="352.0" y="384.0">de.dhbw.plugins.rest.PurchasesController</node>
+    <node x="2151.5" y="533.5">de.dhbw.cleanproject.adapter.bar.BarToBarResourceMapper</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="de.dhbw.cleanproject.adapter.person.PersonToPersonDTOMapper" target="de.dhbw.cleanproject.adapter.person.PersonDTO" relationship="CREATE">
+      <point x="-59.25" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.persistence.hibernate.drink.DrinkRepositoryBridge" target="de.dhbw.plugins.persistence.hibernate.drink.SpringDataDrinkRepository" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="1071.0" y="595.0" />
+      <point x="1242.5" y="595.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.rest.PurchasesController" target="de.dhbw.cleanproject.application.drink.DrinkApplicationService" relationship="TO_ONE">
+      <point x="36.5" y="14.5" />
+      <point x="478.5" y="429.0" />
+      <point x="672.5" y="429.0" />
+      <point x="-15.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.tests.RepositoryTests" target="de.dhbw.cleanproject.domain.person.Person" relationship="CREATE">
+      <point x="38.0" y="14.5" />
+      <point x="32.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.persistence.hibernate.person.PersonRepositoryBridge" target="de.dhbw.plugins.persistence.hibernate.person.SpringDataPersonRepository" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="2509.0" y="586.0" />
+      <point x="2646.0" y="586.0" />
+      <point x="84.75" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.persistence.hibernate.bar.BarRepositoryBridge" target="de.dhbw.plugins.persistence.hibernate.bar.SpringDataBarRepository" relationship="TO_ONE">
+      <point x="0.0" y="-14.5" />
+      <point x="1430.25" y="511.0" />
+      <point x="1541.25" y="511.0" />
+      <point x="44.25" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.tests.RepositoryTests" target="de.dhbw.plugins.persistence.hibernate.person.SpringDataPersonRepository" relationship="TO_ONE">
+      <point x="23.0" y="14.5" />
+      <point x="1896.5" y="586.0" />
+      <point x="2646.0" y="586.0" />
+      <point x="84.75" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.tests.RepositoryTests" target="de.dhbw.plugins.persistence.hibernate.bar.SpringDataBarRepository" relationship="TO_ONE">
+      <point x="0.0" y="-14.5" />
+      <point x="1873.5" y="511.0" />
+      <point x="1541.25" y="511.0" />
+      <point x="44.25" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.tests.RepositoryTests" target="de.dhbw.cleanproject.domain.purchase.Purchase" relationship="CREATE">
+      <point x="41.0" y="-14.5" />
+      <point x="1914.5" y="162.0" />
+      <point x="1905.0" y="162.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.rest.PurchasesController" target="de.dhbw.cleanproject.application.person.PersonService" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="442.0" y="474.0" />
+      <point x="2051.0" y="474.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.rest.PersonsController" target="de.dhbw.cleanproject.adapter.person.PersonToPersonDTOMapper" relationship="TO_ONE">
+      <point x="-15.0" y="14.5" />
+      <point x="2433.0" y="459.0" />
+      <point x="984.5" y="459.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="de.dhbw.cleanproject.application.purchase.OrderService" target="de.dhbw.cleanproject.application.exceptions.MyException" relationship="CREATE">
+      <point x="15.0" y="14.5" />
+      <point x="150.0" y="189.0" />
+      <point x="1881.75" y="189.0" />
+      <point x="52.25" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.cleanproject.application.bar.BarService" target="de.dhbw.cleanproject.domain.bar.BarRepository" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="881.5" y="660.0" />
+      <point x="1025.5" y="660.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.tests.RepositoryTests" target="de.dhbw.cleanproject.domain.bar.Bar" relationship="CREATE">
+      <point x="77.0" y="0.0" />
+      <point x="1966.0" y="548.0" />
+      <point x="-26.5" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.rest.DrinksController" target="de.dhbw.cleanproject.application.bar.BarService" relationship="TO_ONE">
+      <point x="-15.0" y="14.5" />
+      <point x="228.5" y="444.0" />
+      <point x="881.5" y="444.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.cleanproject.application.purchase.OrderService" target="de.dhbw.cleanproject.domain.drink.DrinkRepository" relationship="TO_ONE">
+      <point x="-27.5" y="14.5" />
+      <point x="107.5" y="504.0" />
+      <point x="809.0" y="504.0" />
+      <point x="-37.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.persistence.hibernate.drink.DrinkRepositoryBridge" target="de.dhbw.cleanproject.domain.drink.DrinkRepository" relationship="REALIZATION">
+      <point x="-15.0" y="14.5" />
+      <point x="1056.0" y="645.0" />
+      <point x="846.0" y="645.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.persistence.hibernate.bar.BarRepositoryBridge" target="de.dhbw.cleanproject.domain.bar.BarRepository" relationship="REALIZATION">
+      <point x="0.0" y="14.5" />
+      <point x="1430.25" y="645.0" />
+      <point x="1071.0" y="645.0" />
+      <point x="45.5" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.rest.PurchasesController" target="de.dhbw.cleanproject.application.purchase.OrderService" relationship="TO_ONE">
+      <point x="0.0" y="-14.5" />
+      <point x="442.0" y="219.0" />
+      <point x="135.0" y="219.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.rest.BarsController" target="de.dhbw.cleanproject.application.bar.BarService" relationship="TO_ONE">
+      <point x="-15.0" y="14.5" />
+      <point x="2248.0" y="444.0" />
+      <point x="881.5" y="444.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.rest.BarsController" target="de.dhbw.cleanproject.application.person.PersonService" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="2263.0" y="474.0" />
+      <point x="2051.0" y="474.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.persistence.hibernate.purchase.PurchaseRepositoryBridge" target="de.dhbw.cleanproject.domain.purchase.PurchaseRepository" relationship="REALIZATION">
+      <point x="-15.0" y="14.5" />
+      <point x="-37.5" y="711.5" />
+      <point x="-89.5" y="0.0" />
+    </edge>
+    <edge source="de.dhbw.plugins.rest.DrinksController" target="de.dhbw.cleanproject.application.person.PersonService" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="243.5" y="474.0" />
+      <point x="2051.0" y="474.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.cleanproject.application.bar.PurchaseService" target="de.dhbw.cleanproject.domain.purchase.PurchaseRepository" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="475.5" y="630.0" />
+      <point x="430.75" y="630.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.persistence.hibernate.person.PersonRepositoryBridge" target="de.dhbw.cleanproject.domain.person.PersonRepository" relationship="REALIZATION">
+      <point x="104.5" y="0.0" />
+      <point x="2698.75" y="548.0" />
+      <point x="2698.75" y="743.5" />
+      <point x="2328.75" y="743.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="de.dhbw.tests.RepositoryTests" target="de.dhbw.cleanproject.domain.person.Person" relationship="TO_ONE">
+      <point x="-30.0" y="14.5" />
+      <point x="-36.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.rest.BarsController" target="de.dhbw.cleanproject.adapter.bar.BarToBarResourceMapper" relationship="TO_ONE">
+      <point x="15.0" y="14.5" />
+      <point x="15.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.persistence.hibernate.purchase.PurchaseRepositoryBridge" target="de.dhbw.plugins.persistence.hibernate.purchase.SpringDataPurchaseRepository" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="-22.5" y="579.0" />
+      <point x="908.0" y="579.0" />
+      <point x="908.0" y="610.0" />
+      <point x="2631.0" y="610.0" />
+      <point x="2631.0" y="17.0" />
+      <point x="252.0" y="17.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.cleanproject.application.purchase.OrderService" target="de.dhbw.cleanproject.domain.purchase.Purchase" relationship="CREATE">
+      <point x="0.0" y="-14.5" />
+      <point x="135.0" y="2.0" />
+      <point x="237.0" y="2.0" />
+      <point x="237.0" y="162.0" />
+      <point x="1905.0" y="162.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="de.dhbw.cleanproject.application.exceptions.MyException" target="de.dhbw.cleanproject.application.exceptions.MyErrorCode" relationship="TO_ONE">
+      <point x="0.0" y="-14.5" />
+      <point x="33.75" y="14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.rest.PurchasesController" target="de.dhbw.cleanproject.application.bar.BarService" relationship="TO_ONE">
+      <point x="-15.0" y="14.5" />
+      <point x="427.0" y="444.0" />
+      <point x="881.5" y="444.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.cleanproject.application.person.PersonService" target="de.dhbw.cleanproject.domain.person.PersonRepository" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="2051.0" y="711.5" />
+      <point x="-82.5" y="0.0" />
+    </edge>
+    <edge source="de.dhbw.tests.RepositoryTests" target="de.dhbw.cleanproject.domain.purchase.Purchase" relationship="TO_ONE">
+      <point x="56.0" y="-14.5" />
+      <point x="24.5" y="14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.rest.DrinksController" target="de.dhbw.cleanproject.application.drink.DrinkApplicationService" relationship="TO_ONE">
+      <point x="15.0" y="14.5" />
+      <point x="258.5" y="429.0" />
+      <point x="672.5" y="429.0" />
+      <point x="-15.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.cleanproject.application.purchase.OrderService" target="de.dhbw.cleanproject.domain.purchase.PurchaseRepository" relationship="TO_ONE">
+      <point x="-67.5" y="0.0" />
+      <point x="-151.5" y="157.0" />
+      <point x="-151.5" y="595.0" />
+      <point x="310.5" y="595.0" />
+      <point x="310.5" y="630.0" />
+      <point x="430.75" y="630.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.cleanproject.application.drink.DrinkApplicationService" target="de.dhbw.cleanproject.domain.drink.DrinkRepository" relationship="TO_ONE">
+      <point x="0.0" y="-14.5" />
+      <point x="687.5" y="504.0" />
+      <point x="809.0" y="504.0" />
+      <point x="-37.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.rest.PersonsController" target="de.dhbw.cleanproject.application.person.PersonService" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="2448.0" y="474.0" />
+      <point x="2051.0" y="474.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.tests.RepositoryTests" target="de.dhbw.cleanproject.domain.drink.Drink" relationship="CREATE">
+      <point x="15.0" y="-14.5" />
+      <point x="1888.5" y="489.0" />
+      <point x="1745.0" y="489.0" />
+      <point x="-15.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.tests.RepositoryTests" target="de.dhbw.cleanproject.domain.bar.Bar" relationship="TO_ONE">
+      <point x="66.0" y="14.5" />
+      <point x="1939.5" y="652.0" />
+      <point x="-36.0" y="0.0" />
+    </edge>
+    <edge source="de.dhbw.tests.RepositoryTests" target="de.dhbw.cleanproject.domain.drink.Drink" relationship="TO_ONE">
+      <point x="-77.0" y="0.0" />
+      <point x="1760.0" y="548.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.cleanproject.application.bar.PurchaseService" target="de.dhbw.cleanproject.domain.drink.DrinkRepository" relationship="TO_ONE">
+      <point x="0.0" y="-14.5" />
+      <point x="475.5" y="504.0" />
+      <point x="809.0" y="504.0" />
+      <point x="-37.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.tests.RepositoryTests" target="de.dhbw.plugins.persistence.hibernate.purchase.SpringDataPurchaseRepository" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="1873.5" y="579.0" />
+      <point x="908.0" y="579.0" />
+      <point x="908.0" y="610.0" />
+      <point x="2631.0" y="610.0" />
+      <point x="2631.0" y="17.0" />
+      <point x="252.0" y="17.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.plugins.rest.DrinksController" target="de.dhbw.cleanproject.adapter.drink.DrinkToDrinkResourceMapper" relationship="TO_ONE">
+      <point x="-30.0" y="14.5" />
+      <point x="-30.0" y="-14.5" />
+    </edge>
+    <edge source="de.dhbw.tests.RepositoryTests" target="de.dhbw.plugins.persistence.hibernate.drink.SpringDataDrinkRepository" relationship="TO_ONE">
+      <point x="-15.0" y="14.5" />
+      <point x="1858.5" y="595.0" />
+      <point x="1242.5" y="595.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.6851106639839034" showDependencies="true" x="1328.9999999999998" y="372.9999999999999" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

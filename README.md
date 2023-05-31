@@ -22,7 +22,7 @@ docker-compose up
 2. optional Daten seeden (siehe unten)
 3. Anwendung starten (RunConfiguration CleanProjectApplication)
 
-Danach im Browser http://localhost:8080/api/drink aufrufen
+Danach im Browser http://localhost:8080/ aufrufen
 
 ### DB verwalten
 
