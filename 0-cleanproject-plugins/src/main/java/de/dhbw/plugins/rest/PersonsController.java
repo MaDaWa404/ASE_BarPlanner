@@ -1,7 +1,7 @@
 package de.dhbw.plugins.rest;
 
 import de.dhbw.cleanproject.adapter.person.PersonResource;
-import de.dhbw.cleanproject.adapter.person.PersonToPersonResourceMapper;
+import de.dhbw.cleanproject.adapter.person.PersonToPersonDTOMapper;
 import de.dhbw.cleanproject.application.exceptions.MyException;
 import de.dhbw.cleanproject.application.person.PersonService;
 import de.dhbw.cleanproject.domain.person.Person;
@@ -17,13 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 public class PersonsController {
 
     private final PersonService personService;
-
-    private final PersonToPersonResourceMapper personToPersonResourceMapper;
+    private final PersonToPersonDTOMapper personToPersonDTOMapper;
 
     @Autowired
-    public PersonsController(PersonService personService, PersonToPersonResourceMapper personToPersonResourceMapper) {
+    public PersonsController(PersonService personService, PersonToPersonDTOMapper personToPersonDTOMapper) {
         this.personService = personService;
-        this.personToPersonResourceMapper = personToPersonResourceMapper;
+        this.personToPersonDTOMapper = personToPersonDTOMapper;
     }
 
     @GetMapping
@@ -35,13 +34,11 @@ public class PersonsController {
         } catch (MyException e) {
             return new ResponseEntity<>(e.getCode(), HttpStatus.BAD_REQUEST);
         }
-
-        // TODO remove passwordHash
-        return new ResponseEntity<>(personToPersonResourceMapper.apply(p), HttpStatus.OK);
+        return new ResponseEntity<>(personToPersonDTOMapper.apply(p), HttpStatus.OK);
     }
 
     @PostMapping(value = "/register")
-    public ResponseEntity<Object> register(@RequestBody Person p, HttpServletRequest request) {
+    public ResponseEntity<Object> register(@RequestBody PersonResource p, HttpServletRequest request) {
         Person person;
         try {
             person = new Person(p.getUsername(), p.getPasswordHash(), p.getLastname(), p.getFirstname());
@@ -52,12 +49,12 @@ public class PersonsController {
         if (personService.findByUsername(p.getUsername()) == null) {
             person = personService.save(person);
             request.getSession().setAttribute("person", person.getId().toString());
-            return new ResponseEntity<>(new PersonResource(person.getUsername()), HttpStatus.CREATED);
+            return new ResponseEntity<>(personToPersonDTOMapper.apply(person), HttpStatus.CREATED);
         } else return ResponseEntity.status(403).body("already exists");
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<Object> login(@RequestBody(required = false) PersonResource p, HttpServletRequest request) {
+    public ResponseEntity<Object> login(@RequestBody PersonResource p, HttpServletRequest request) {
         if (p.getUsername().isBlank() || p.getPasswordHash().isBlank()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -67,7 +64,7 @@ public class PersonsController {
         }
         if (person.getPasswordHash().equals(p.getPasswordHash())) {
             request.getSession().setAttribute("person", person.getId().toString());
-            return new ResponseEntity<>(new PersonResource(person.getUsername()), HttpStatus.OK);
+            return new ResponseEntity<>(personToPersonDTOMapper.apply(person), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

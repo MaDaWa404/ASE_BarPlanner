@@ -58,6 +58,7 @@ public class Drink {
     }
 
     public void setAmount(int amount) {
+        Validate.notNaN(amount);
         this.amount = amount;
     }
 

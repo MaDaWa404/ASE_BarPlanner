@@ -4,21 +4,17 @@ public class PersonResource {
 
     private final String username;
 
-    private String passwordHash;
+    private final String passwordHash;
 
-    private String lastname;
+    private final String lastname;
 
-    private String firstname;
+    private final String firstname;
 
     public PersonResource(String username, String passwordHash, String lastname, String firstname) {
         this.username = username;
         this.passwordHash = passwordHash;
         this.lastname = lastname;
         this.firstname = firstname;
-    }
-
-    public PersonResource(String username) {
-        this.username = username;
     }
 
     public String getUsername() {

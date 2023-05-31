@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public interface PersonRepository {
 
-    Person findPersonById(UUID username);
+    Person findPersonById(UUID uuid);
 
     Person findPersonByUsername(String username);
 

@@ -4,7 +4,7 @@ import de.dhbw.cleanproject.application.bar.BarService;
 import de.dhbw.cleanproject.application.drink.DrinkApplicationService;
 import de.dhbw.cleanproject.application.exceptions.MyException;
 import de.dhbw.cleanproject.application.person.PersonService;
-import de.dhbw.cleanproject.application.purchase.PurchaseService;
+import de.dhbw.cleanproject.application.purchase.OrderService;
 import de.dhbw.cleanproject.domain.bar.Bar;
 import de.dhbw.cleanproject.domain.drink.Drink;
 import de.dhbw.cleanproject.domain.person.Person;
@@ -24,15 +24,15 @@ import java.util.Map;
 public class PurchasesController {
 
     private final DrinkApplicationService drinkApplicationService;
-    private final PurchaseService purchaseService;
+    private final OrderService orderService;
     private final BarService barService;
 
     private final PersonService personService;
 
     @Autowired
-    public PurchasesController(DrinkApplicationService drinkApplicationService, PurchaseService purchaseService, BarService barService, PersonService personService) {
+    public PurchasesController(DrinkApplicationService drinkApplicationService, OrderService orderService, BarService barService, PersonService personService) {
         this.drinkApplicationService = drinkApplicationService;
-        this.purchaseService = purchaseService;
+        this.orderService = orderService;
         this.barService = barService;
         this.personService = personService;
     }
@@ -49,7 +49,7 @@ public class PurchasesController {
         } catch (MyException e) {
             return new ResponseEntity<>(e.getCode(), HttpStatus.BAD_REQUEST);
         }
-        purchaseService.order(d, p);
+        orderService.createOrder(d, p);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
