@@ -45,11 +45,11 @@ public class PurchasesController {
             p = personService.getPersonFromId(Helper.getIdFromRequest(request));
             Bar b = barService.getBarByTitle(map.get("selectedBar"));
             d = drinkApplicationService.findDrinkByBarAndTitle(b.getId(), map.get("title"));
+            orderService.createOrder(d, p);
 
         } catch (MyException e) {
             return new ResponseEntity<>(e.getCode(), HttpStatus.BAD_REQUEST);
         }
-        orderService.createOrder(d, p);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

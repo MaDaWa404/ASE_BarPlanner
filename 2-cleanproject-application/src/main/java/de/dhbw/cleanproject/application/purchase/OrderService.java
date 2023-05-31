@@ -1,5 +1,7 @@
 package de.dhbw.cleanproject.application.purchase;
 
+import de.dhbw.cleanproject.application.exceptions.MyErrorCode;
+import de.dhbw.cleanproject.application.exceptions.MyException;
 import de.dhbw.cleanproject.domain.drink.Drink;
 import de.dhbw.cleanproject.domain.drink.DrinkRepository;
 import de.dhbw.cleanproject.domain.person.Person;
@@ -20,7 +22,8 @@ public class OrderService {
         this.drinkRepository = drinkRepository;
     }
 
-    public void createOrder(Drink drink, Person person) {
+    public void createOrder(Drink drink, Person person) throws MyException {
+        if (drink.getAmount() < 1) throw new MyException(MyErrorCode.NO_DRINKS_LEFT);
         Purchase p = new Purchase(drink.getId(), person.getId());
         purchaseRepository.save(p);
         drink.setAmount(drink.getAmount() - 1);
